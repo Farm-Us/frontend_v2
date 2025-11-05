@@ -1,0 +1,51 @@
+/* 색상 정의 */
+:root {
+  --neutral-strong: #3b4149; /* Gray800 */
+  --neutral-default: #6a7584; /* Gray500 */
+  --brand-primary-subtler: #e8f9f2;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* ✅ 더 유연하게 변경 */
+  height: 3.5rem; /* h-14 */
+  box-sizing: border-box;
+  padding: 18px;
+}
+
+/* mypage일 때 배경색 */
+.mypageColor {
+  background-color: var(--brand-primary-subtler);
+}
+
+/* 왼쪽 텍스트 */
+.title {
+  color: var(--neutral-strong);
+  font-size: 18px; /* text-lg */
+  font-weight: 500; /* font-medium */
+  line-height: 26px; /* leading-relaxed */
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 오른쪽 아이콘 */
+.iconWrapperRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.iconWrapperRight svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--neutral-default);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.iconWrapperRight svg:hover {
+  opacity: 0.7;
+}

@@ -1,111 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+// pages/ProductDetailPage.jsx
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useProduct } from '@/hooks/useProduct';
+import { ProductHeader } from '@/components/ProductDetail/ProductHeader';
+import { ProductInfo } from '@/components/ProductDetail/ProductInfo';
+import { ProductDetailContent } from '@/components/ProductDetail/ProductDetailContent';
+import { ProductActions } from '@/components/ProductDetail/ProductActions';
 import styles from './ProductDetailPage.module.css';
-
-// 아이콘 컴포넌트
-const ChevronLeftIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15 18L9 12L15 6" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-const StarIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFC700" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFC700"/>
-    </svg>
-);
-const HeartIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-         <path d="M12.39 8.16C10.29 6.48 7.39 6.81 5.56 8.94C3.73 11.07 4.05 14.43 6.13 16.51L12 22L17.87 16.51C19.95 14.43 20.27 11.07 18.44 8.94C16.61 6.81 13.71 6.48 11.61 8.16L12 8.5L12.39 8.16Z" stroke="#3B4149" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-);
+import PaymentBottomSheet from '../components/payments/PaymentBottomSheet';
 
 export default function ProductDetailPage() {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [product, setProduct] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { product, loading, error } = useProduct(id);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-    useEffect(() => {
-        const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-        // URL의 id와 일치하는 상품을 찾습니다.
-        const foundProduct = storedProducts.find((p) => p.id.toString() === id);
-        if (foundProduct) {
-            setProduct(foundProduct);
-        } else {
-            // 상품이 없으면 판매자 마켓으로 보냅니다.
-            navigate('/seller-market');
-        }
-    }, [id, navigate]);
+  const handleBack = () => navigate(-1);
 
-    const formatPrice = (price) => {
-        if (!price || isNaN(price)) return '';
-        return new Intl.NumberFormat('ko-KR').format(price);
-    };
+  const handleAddToCart = () => {
+    // 장바구니 추가 로직
+    console.log('장바구니에 추가');
+  };
 
-    if (!product) {
-        return <div>상품을 찾을 수 없습니다.</div>;
-    }
-    
-    // 첫 번째 옵션 가격을 기준으로 할인 계산
-    const firstOptionPrice = product.options?.[0]?.price;
-    const discountedPrice = product.discount && firstOptionPrice
-        ? Math.round(firstOptionPrice * (1 - product.discount / 100))
-        : firstOptionPrice;
+  const handleBuyNow = () => {
+    // 바로구매 로직
+    console.log('바로구매');
+    // TODO: 구매 옵션 모달 열기
+    setIsSelectOpen(true);
+  };
 
-    return (
-        <div className={styles.div}>
-            <img className={styles.imgIcon} src={product.mainImage} alt={product.productName} />
-            
-            <div className={styles.header}>
-                <button onClick={() => navigate(-1)} className={styles.headerButton}><ChevronLeftIcon /></button>
-                <div className={styles.div26}>상품 상세</div>
-                <div style={{width: '24px'}}></div>
-            </div>
+  const handleToggleWishlist = () => {
+    // 찜하기 토글 로직
+    console.log('찜하기 토글');
+  };
 
-            <div className={styles.infoAndTab}>
-                <div className={styles.info}>
-                    <div className={styles.brand}>
-                        <div className={styles.brand1}>
-                            <img className={styles.brandChild} src={product.mainImage} alt={product.marketName} />
-                            <div className={styles.div1}>{product.marketName}</div>
-                        </div>
-                    </div>
-                    <div className={styles.productInfo}>
-                        <div className={styles.kg}>{product.productName}</div>
-                        <div className={styles.starParent}><StarIcon /><div className={styles.div2}>0.0</div><div className={styles.div2}>(0)</div></div>
-                        <div className={styles.price}>
-                            {product.discount && <b className={styles.b}>{product.discount}%</b>}
-                            <b className={styles.b1}>{formatPrice(discountedPrice)}원</b>
-                        </div>
-                        {product.discount && <div className={styles.div4}>{formatPrice(firstOptionPrice)}원</div>}
-                    </div>
-                    <div className={styles.listParent}>
-                        <div className={styles.list}><div className={styles.div5}>농부</div><div className={styles.cj}>{product.farmerName}</div></div>
-                        <div className={styles.list}><div className={styles.div5}>경력</div><div className={styles.cj}>{product.career}</div></div>
-                        <div className={styles.list}><div className={styles.div5}>재배방식</div><div className={styles.cj}>{product.cultivationMethod}</div></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div className={styles.detailContent}>
-                {product.details.map((detail, index) => (
-                    // 제목, 내용, 이미지가 모두 있는 경우에만 섹션을 렌더링
-                    (detail.title && detail.content && detail.image) && (
-                        <div key={index} className={styles.contents}>
-                            <img className={styles.contentsChild} src={detail.image} alt={detail.title} />
-                            <b className={styles.b2}>{detail.title}</b>
-                            <div className={styles.div22}>{detail.content}</div>
-                        </div>
-                    )
-                ))}
-            </div>
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
 
-            <div className={styles.bottomButton}>
-                <button className={styles.heartButton}><HeartIcon /></button>
-                <div className={styles.buttonGroup}>
-                    <button className={styles.button}>장바구니</button>
-                    <button className={styles.button1}>바로구매</button>
-                </div>
-            </div>
-        </div>
-    );
+  if (error || !product) {
+    return <div>{error || '상품을 찾을 수 없습니다.'}</div>;
+  }
+
+  return (
+    <div className={`${styles.div} h-full pb-20`}>
+      <ProductHeader onBack={handleBack} />
+
+      <img className={styles.imgIcon} src={product.mainImage} alt={product.productName} />
+
+      <div className={styles.infoAndTab}>
+        <ProductInfo product={product} />
+      </div>
+
+      <ProductDetailContent details={product.details} />
+      {isSelectOpen && <PaymentBottomSheet setIsSelectOpen={setIsSelectOpen} />}
+      <ProductActions onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onToggleWishlist={handleToggleWishlist} />
+    </div>
+  );
 }

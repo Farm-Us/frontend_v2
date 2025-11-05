@@ -1,0 +1,5 @@
+@media (max-width: 410px) {
+  .flex380col {
+    @apply flex flex-col items-start;
+  }
+}

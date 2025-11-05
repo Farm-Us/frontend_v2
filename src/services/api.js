@@ -7,7 +7,8 @@ const getApiConfig = () => {
   const baseConfig = {
     timeout: 10000,
     headers: {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
   };
 
@@ -36,7 +37,19 @@ api.interceptors.request.use(
     // if (token) {
     //   requestConfig.headers.Authorization = `Bearer ${token}`;
     // }
+    // FormData인 경우 Content-Type 헤더 제거 (브라우저가 자동 설정)
+    if (requestConfig.data instanceof FormData) {
+      delete requestConfig.headers['Content-Type'];
 
+      if (config.isDevelopment) {
+        console.log('📎 FormData detected - Content-Type header removed');
+        console.log('📤 FormData entries:');
+        console.log(requestConfig.data);
+        // for (let [key, value] of requestConfig.data.entries()) {
+        //   console.log(`  ${key}:`, value);
+        // }
+      }
+    }
     // 개발 환경에서만 로깅
     if (config.isDevelopment) {
       console.log('🚀 API Request:', requestConfig.method?.toUpperCase(), requestConfig.url);

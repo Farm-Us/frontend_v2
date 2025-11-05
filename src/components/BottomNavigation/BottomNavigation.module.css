@@ -1,0 +1,40 @@
+.navBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: #f9fafb;
+}
+
+.label {
+  font-size: 12px;
+  color: #6a7685;
+  font-weight: 500;
+}
+
+.activeLabel {
+  font-size: 12px;
+  color: #15c47e;
+  font-weight: 600;
+}
