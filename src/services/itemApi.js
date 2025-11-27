@@ -20,6 +20,7 @@ export const itemApi = {
   getItems: async (params = {}) => {
     try {
       const resp = await api.get(`/items`, { params });
+      console.log(resp);
       return resp;
     } catch (error) {
       throw error;

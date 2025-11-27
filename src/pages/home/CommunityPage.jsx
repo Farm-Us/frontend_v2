@@ -15,16 +15,16 @@ import { useCommunityPosts } from '../../hooks/useCommunityPosts';
 
 export default function CommunityPage() {
   // 카테고리 내용 호출
-  const { allPosts } = useCommunityPosts({ pageParam: 1 });
-  console.log('appPosts: ', allPosts);
+  const { fetchedPosts: filteredPosts } = useCommunityPosts({ pageParam: 0 });
+  console.log(filteredPosts);
   // TODO: 물품 호출(필요시)
 
   const [activeTooltipId, setActiveTooltipId] = useState(null);
   const { isSeller } = useUserCheck();
 
   // 게시물
-  const filteredPosts = allPosts?.content;
-
+  // const filteredPosts = allPosts;
+  // console.log(filteredPosts);
   return (
     <div className='relative '>
       {/* 게시물 목록 */}

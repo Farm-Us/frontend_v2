@@ -157,10 +157,6 @@ export const useProductRegistrationForm = () => {
         return response?.message || '상품이 성공적으로 저장되었습니다!';
       },
       error: (error) => {
-        // 이전 기록: 로컬스토리지 저장
-        const existingProducts = JSON.parse(localStorage.getItem('products')) || [];
-        existingProducts.unshift(newProduct);
-        localStorage.setItem('products', JSON.stringify(existingProducts));
         reset();
         navigate('/seller-market', { replace: false });
         return '상품 저장에 실패했습니다.';

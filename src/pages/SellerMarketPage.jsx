@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './SellerMarketPage.module.css';
 import DefaultImage from '@/assets/images/UserProfile.jpg';
+import { useProduct } from '../hooks/useProduct';
 
 // 아이콘 컴포넌트
 const ChevronLeftIcon = () => (
@@ -17,26 +18,11 @@ const PlusIcon = () => (
 
 export default function SellerMarketPage() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
+  const { data: products } = useProduct(1);
   const [profile, setProfile] = useState({
     marketName: '내 마켓', // 기본값
     profileImage: DefaultImage, // 기본값
   });
-
-  useEffect(() => {
-    // localStorage에서 상품 목록을 불러옵니다.
-    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-    setProducts(storedProducts);
-
-    // 가장 최근에 등록된 상품의 정보로 프로필을 설정합니다.
-    if (storedProducts.length > 0) {
-      const latestProduct = storedProducts[0];
-      setProfile({
-        marketName: latestProduct.marketName,
-        profileImage: DefaultImage,
-      });
-    }
-  }, []);
 
   return (
     <div className={styles.div}>
@@ -65,13 +51,14 @@ export default function SellerMarketPage() {
 
       {/* --- 상품 목록 --- */}
       <div className={styles.productList}>
-        {products.length > 0 ? (
+        {products?.length > 0 ? (
           products.map((product) => (
             // 각 상품 카드를 클릭하면 상세 페이지로 이동합니다.
-            <Link key={product.id} to={`/product-detail/${product.id}`} className={styles.card}>
+            <Link key={product.itemId} to={`/product-detail/${product.itemId}`} className={styles.card}>
               <img
                 className={styles.imgIcon1}
-                src={product.mainImage || 'https://placehold.co/92x92'}
+                // src={product.mainImage || 'https://placehold.co/92x92'}
+                src={product.thumbnailImageUrl || 'https://placehold.co/92x92'}
                 alt={product.productName || product.itemName}
               />
               <div className={styles.info}>
@@ -80,11 +67,12 @@ export default function SellerMarketPage() {
                 <div className={styles.price}>
                   {product.discount >= '0' && <div className={styles.div10}>{product.discount}%</div>}
                   <div className={styles.div7}>
-                    {product.options?.[0]?.price
+                    {/* {product.options?.[0]?.price
                       ? `${new Intl.NumberFormat('ko-KR').format(
                           product.options[0].price * (1 - (product.discount || 0) / 100)
                         )}원`
-                      : ''}
+                      : ''} */}
+                    {product?.discountedPrice}
                   </div>
                 </div>
               </div>

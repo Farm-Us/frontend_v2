@@ -61,12 +61,11 @@ export const useCreateNewSell = (producerId) => {
   const saveItemMutation = useMutation({
     mutationFn: (item) => itemApi.createItem(producerId, item),
     onSuccess: (resp) => {
-      console.log(resp);
       queryClient.setQueryData(['get-items-producer', producerId], (oldData) => {
         if (oldData) {
-          return [...oldData, item];
+          return [...oldData, resp.data];
         }
-        return [item];
+        return [resp.data];
       });
     },
     onError: (error) => {

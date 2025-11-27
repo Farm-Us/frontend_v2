@@ -1,4 +1,4 @@
-// 저장/불러오기 모두 처리하는 맵핑 로직
+// 저장 처리하는 맵핑 로직
 export const dataLogics = (producerId, data) => {
   console.log('parsing...: ', data);
   if (!data) {
@@ -23,7 +23,7 @@ export const dataLogics = (producerId, data) => {
     packageDetails: data?.details[3]?.content,
     expirationDate: now.toLocaleDateString(),
     storageMethod: '냉장보관',
-    itemStatus: data?.category,
+    itemStatus: 'AVAILABLE',
     stockQuantity: 100,
     subCategoryIds: [1],
     options: data?.options?.map((option) => ({

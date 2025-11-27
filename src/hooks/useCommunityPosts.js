@@ -16,7 +16,7 @@ export const useCommunityPosts = (initialParams = {}) => {
     refetch,
   } = useQuery({
     queryKey: ['community', params],
-    queryFn: async ({ pageParam = 1 }) => {
+    queryFn: async ({ pageParam = 0 }) => {
       const response = await communityApi.getPosts({
         ...params,
         page: pageParam,
@@ -24,6 +24,7 @@ export const useCommunityPosts = (initialParams = {}) => {
       });
       return response;
     },
+    select: (data) => data.content,
     staleTime: 10000 * 60 * 5,
     onSuccess: (data) => {
       // replace 여부에 따라 데이터 처리
@@ -45,7 +46,7 @@ export const useCommunityPosts = (initialParams = {}) => {
     const updatedParams = {
       ...params,
       ...newParams,
-      page: replace ? 1 : page,
+      page: replace ? 0 : page,
       replace,
     };
     setParams(updatedParams);
@@ -104,6 +105,7 @@ export const useCommunityPosts = (initialParams = {}) => {
   }, [fetchedPosts]);
 
   return {
+    fetchedPosts,
     posts,
     loading,
     error,

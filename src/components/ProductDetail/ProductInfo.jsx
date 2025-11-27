@@ -3,17 +3,18 @@ import React from 'react';
 import { StarIcon } from '@/components/icons/StarIcon';
 import { formatPrice, calculateDiscountedPrice } from '@/utils/formatPrice';
 import styles from '@/pages/ProductDetailPage.module.css';
+import userAvatarImg1 from '@/assets/images/user-profile-1.jpg';
 
 export const ProductInfo = ({ product }) => {
-  const firstOptionPrice = product?.price || product.options?.[0]?.price;
-  const discountedPrice = calculateDiscountedPrice(firstOptionPrice, product.discount);
+  const firstOptionPrice = product?.discountedPrice || product.options?.[0]?.optionPrice;
+  const discountedPrice = calculateDiscountedPrice(firstOptionPrice, product?.discount);
 
   return (
     <div className={styles.info}>
       <div className={styles.brand}>
         {/* 판매자 정보 */}
         <div className={styles.brand1}>
-          <img className={styles.brandChild} src={product.mainImage} alt={product.marketName} />
+          <img className={styles.brandChild} src={product?.userImage || userAvatarImg1} alt={product.marketName} />
           <div className={styles.div1}>{product.marketName}</div>
         </div>
       </div>

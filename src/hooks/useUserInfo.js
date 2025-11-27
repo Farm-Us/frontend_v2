@@ -19,52 +19,19 @@ export const useUserInfo = () => {
 
   // 로컬스토리지 체크 후 자동 로그인 (목데이터)
   const initializeUser = () => {
-    const storedUser = localStorage.getItem('user');
-
-    if (!storedUser) {
-      // 로컬스토리지에 데이터가 없으면 일반 유저로 설정
-      guestAuth();
-    }
+    // 목데이터로 일반 유저로 초기화
+    guestAuth();
   };
 
   return { guestAuth, sellerAuth, initializeUser };
 };
 
 export const useUserCheck = () => {
-  const [isSeller, setIsSeller] = useState(() => {
-    try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      return user?.state.isSeller ?? false;
-    } catch {
-      return false;
-    }
-  });
-  const [user, setUser] = useState(() => {
-    try {
-      const userData = JSON.parse(localStorage.getItem('user'));
-      return userData?.state || null;
-    } catch (error) {
-      return false;
-    }
-  });
+  const [isSeller, setIsSeller] = useState(false);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'user') {
-        try {
-          const updatedUser = JSON.parse(e.newValue);
-          setIsSeller(updatedUser?.isSeller ?? false);
-          setUser(updatedUser || null);
-        } catch {
-          setIsSeller(false);
-          setUser(null);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  // 추가적인 유저 정보 확인 로직 필요 시 여기에 추가
+  // TODO: 실제 로그인 시스템 구현 시 서버에서 유저 상태 확인
 
   return { isSeller, user };
 };

@@ -3,27 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 import useCommunityWriteStore from '@/store/communityWriteStore';
 import { useEffect } from 'react';
-import { use } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postApi } from '../services/postApi';
 import toast from 'react-hot-toast';
-import { createFormData } from '../utils/formData';
 import { communityWriteMapper } from '../utils/communityWriteDataMapper';
+import { useUserStore } from '../store/userStore';
 
 /**
  * react-hook-form + zustand 연동을 위한 커스텀 훅
+ * 커뮤니티 포스트 작성 및 제출 로직 관리
  */
 export default function useCommunityWriteForm() {
-  // zustand store 에서 이전에 입력했던 값(초기값)을 가져옵니다.
-  // selector 에서 object 가 아니라 primitive 와 함수만 꺼내면 무한루프가 없습니다.
-  const { title, content, images, setTitle, setContent, taggedProducts, reset } = useCommunityWriteStore();
-  const { savePostMutation } = useCreateCommunityPost(1);
-  const initTitle = useCommunityWriteStore((state) => state.title);
-  const initContent = useCommunityWriteStore((state) => state.content);
+  // Zustand store에서 값 가져오기
+  const { title, content, images, taggedProducts, setTitle, setContent, reset } = useCommunityWriteStore();
   const setData = useCommunityWriteStore((state) => state.setData);
-  const navigate = useNavigate();
+  const producerId = useUserStore((state) => state.producerId); // 사용자 ID 가져오기
 
-  // react-hook-form 세팅 (onChange 모드로 유효성 검사가 바로바로 일어나게)
+  // React Hook Form 설정
   const {
     register,
     handleSubmit,
@@ -32,47 +28,65 @@ export default function useCommunityWriteForm() {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      title: title,
-      content: content,
+      title: title || '',
+      content: content || '',
     },
   });
 
-  // ✅ watch로 입력 상태가 바뀔 때마다 zustand에 반영
+  // 포스트 생성 mutation
+  const { savePostMutation } = useCreateCommunityPost(producerId);
+  const navigate = useNavigate();
+
+  // watch로 입력 상태 추적
   const watchedTitle = watch('title');
   const watchedContent = watch('content');
 
+  // 제목 변경 시 스토어 업데이트
   useEffect(() => {
-    setTitle(watchedTitle);
+    setTitle(watchedTitle || '');
   }, [watchedTitle, setTitle]);
 
+  // 내용 변경 시 스토어 업데이트
   useEffect(() => {
-    setContent(watchedContent);
+    setContent(watchedContent || '');
   }, [watchedContent, setContent]);
 
-  // form submit 시 호출될 함수
+  // 폼 제출 핸들러
   const onSubmit = async (data) => {
-    // zustand 에 데이터 저장
-    // TODO: 실제 API 연동 시 이부분에서 API 호출 + toast 추가
-    const params = {
-      ...data,
-      itemIds: taggedProducts,
-      images: images,
-    };
-    console.log('파라미터: ', params);
-    const mapper = communityWriteMapper(params);
-    console.log('Mapper: ', mapper);
-    const saveItem = savePostMutation.mutateAsync(mapper);
+    // 유효성 검사
+    if (!data.title?.trim()) {
+      toast.error('제목을 입력해주세요.');
+      return;
+    }
 
+    if (!data.content?.trim()) {
+      toast.error('내용을 입력해주세요.');
+      return;
+    }
+
+    // API 호출 데이터 준비
+    const params = {
+      title: data.title,
+      content: data.content,
+      itemIds: taggedProducts || [],
+      images: images || [],
+    };
+
+    // 데이터 매핑
+    const mappedData = communityWriteMapper(params);
+
+    // API 호출
+    const saveItem = savePostMutation.mutateAsync(mappedData);
     await toast.promise(saveItem, {
-      loading: '저장하는 중...',
+      loading: '글을 올리는 중...',
       success: (resp) => {
         reset();
         navigate('/community', { replace: true });
-        return resp?.message || '글이 성공적으로 저장되었습니다.';
+        return resp?.message || '글이 성공적으로 올려졌습니다.';
       },
       error: (error) => {
-        console.error('저장 실패: ', error);
-        return '저장에 실패했습니다.';
+        console.error('포스트 저장 실패:', error);
+        return error?.message || '글 올리기에 실패했습니다.';
       },
     });
   };
@@ -87,25 +101,35 @@ export default function useCommunityWriteForm() {
   };
 }
 
+/**
+ * 커뮤니티 포스트 생성 mutation
+ * @param {number} producerId - 작성자 ID
+ * @returns {object} savePostMutation 객체
+ */
 const useCreateCommunityPost = (producerId) => {
   const queryClient = useQueryClient();
+
   const savePostMutation = useMutation({
-    mutationFn: (item) => postApi.createPost(producerId, item),
+    mutationFn: (postData) => postApi.createPost(producerId, postData),
     onSuccess: (resp) => {
-      console.log('커뮤니티 글 작성 완료: ', resp);
+      // React Query 캐시 업데이트
       queryClient.setQueryData(['community'], (oldData) => {
-        if (oldData) {
-          return [...oldData, item];
+        if (oldData?.content) {
+          return {
+            ...oldData,
+            content: [resp?.content, ...(oldData?.content || [])],
+          };
         }
-        return [item];
+        return oldData;
       });
+
+      // 커뮤니티 목록 캐시 무효화 (다음 조회 시 새로 가져옴)
+      queryClient.invalidateQueries({ queryKey: ['community'] });
     },
     onError: (error) => {
-      console.error('커뮤니티 글 작성 에러: ', error);
+      console.error('커뮤니티 포스트 생성 에러:', error);
     },
   });
 
-  return {
-    savePostMutation,
-  };
+  return { savePostMutation };
 };

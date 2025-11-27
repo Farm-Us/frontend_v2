@@ -1,18 +1,18 @@
 // pages/ProductDetailPage.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProduct } from '@/hooks/useProduct';
 import { ProductHeader } from '@/components/ProductDetail/ProductHeader';
 import { ProductInfo } from '@/components/ProductDetail/ProductInfo';
 import { ProductDetailContent } from '@/components/ProductDetail/ProductDetailContent';
 import { ProductActions } from '@/components/ProductDetail/ProductActions';
 import styles from './ProductDetailPage.module.css';
 import PaymentBottomSheet from '../components/payments/PaymentBottomSheet';
+import { useProductDetail } from '../hooks/useProduct';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: product, isLoading: loading, error } = useProduct(id);
+  const { data: product, isLoading: loading, error } = useProductDetail(id);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const handleBack = () => navigate(-1);
@@ -46,13 +46,13 @@ export default function ProductDetailPage() {
     <div className={`${styles.div} h-full pb-20`}>
       <ProductHeader onBack={handleBack} />
 
-      <img className={styles.imgIcon} src={product.mainImage} alt={product.productName} />
+      <img className={styles.imgIcon} src={product?.thumbnailImageUrl} alt={product.productName} />
 
       <div className={styles.infoAndTab}>
         <ProductInfo product={product} />
       </div>
 
-      <ProductDetailContent details={product.details} />
+      <ProductDetailContent details={product?.details} />
       {isSelectOpen && <PaymentBottomSheet setIsSelectOpen={setIsSelectOpen} />}
       <ProductActions onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onToggleWishlist={handleToggleWishlist} />
     </div>

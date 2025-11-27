@@ -40,15 +40,16 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
       {/* <PostHeader user={post.user} /> */}
       <PostHeader user={seller} />
 
-      <div onClick={() => navigation(`/community/${post.postId}`)} className='hover:cursor-pointer'>
-        <PostContent content={post.content} />
+      <div onClick={() => navigation(`/community/${post?.postId}`)} className='hover:cursor-pointer'>
+        <p className='px-4 mb-3 text-[16px] font-semibold'>{post?.title}</p>
+        <PostContent content={post?.title} />
       </div>
 
       {/* 이미지 추가 */}
       {post?.mediaUrls && post?.mediaUrls.length > 0 && <PostImageWithTags post={post} />}
 
       {/* 상품 데이터 */}
-      {Array.isArray(post?.items) && post.items.length > 0 && (
+      {Array.isArray(post?.items) && post?.items.length > 0 && (
         <div
           // onClick={() => navigation(`/product-detail/${post.id}`)}
           onClick={() => console.log('상세페이지 이동해야함')}
@@ -60,7 +61,7 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
       {/* 인터랙션 바 추가 */}
       <PostInteractionBar
         likeCount={likeCount}
-        commentCount={post.commentCount || 0}
+        commentCount={post?.commentCount || 0}
         onLike={handleLike}
         onComment={handleComment}
         onShare={handleShare}
