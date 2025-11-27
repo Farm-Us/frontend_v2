@@ -153,12 +153,12 @@ export const useProductRegistrationForm = () => {
       loading: '저장하는 중...',
       success: (response) => {
         reset();
-        navigate('/seller-market', { replace: false });
+        navigate('/seller-market', { replace: true });
         return response?.message || '상품이 성공적으로 저장되었습니다!';
       },
       error: (error) => {
-        reset();
-        navigate('/seller-market', { replace: false });
+        // reset();
+        // navigate('/seller-market', { replace: true });
         return '상품 저장에 실패했습니다.';
       },
     });

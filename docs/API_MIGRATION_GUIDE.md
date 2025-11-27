@@ -95,7 +95,7 @@ itemApi.createItem() 호출
 **확인 필요 사항:**
 
 - [ ] 백엔드에서 어떤 필드를 받는지? (모든 필드 필수인지?)
-- [ ] FormData 형식이 맞는지? (multipart/form-data 인지?)
+- [x] FormData 형식이 맞는지? (multipart/form-data 인지?)
 - [ ] 이미지 업로드는 별도로 처리되는지?
 - [ ] 응답 형식은 무엇인가? (상품 ID 포함 여부)
 

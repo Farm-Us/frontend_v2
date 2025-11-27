@@ -27,11 +27,18 @@ export const useUserInfo = () => {
 };
 
 export const useUserCheck = () => {
-  const [isSeller, setIsSeller] = useState(false);
-  const [user, setUser] = useState(null);
+  // Zustand 스토어에서 직접 유저 정보 조회
+  const { isSeller, userName, marketName, userImage, farmerName, career } = useUserStore();
 
-  // 추가적인 유저 정보 확인 로직 필요 시 여기에 추가
-  // TODO: 실제 로그인 시스템 구현 시 서버에서 유저 상태 확인
+  // Zustand 스토어의 데이터를 객체로 반환
+  const user = {
+    isSeller,
+    userName,
+    marketName,
+    userImage,
+    farmerName,
+    career,
+  };
 
   return { isSeller, user };
 };

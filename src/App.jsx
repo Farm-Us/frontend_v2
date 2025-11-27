@@ -4,7 +4,7 @@
  * App.jsx
  * 프로젝트의 모든 페이지 경로를 설정하고 관리하는 최상위 라우팅 파일입니다.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // --- 레이아웃 컴포넌트 ---
@@ -33,9 +33,20 @@ import CommunityWriteTagPage from './pages/community/CommunityWriteTagPage';
 import CommunityWriteConfirmPage from './pages/community/CommunityWriteConfirmPage';
 import CommunityDetailPage from './pages/community/CommunityDetailPage';
 
-function App() {
+// --- 목데이터 초기화 ---
+import { user, seller } from './data';
+import { useUserStore } from './store/userStore';
+
+function AppContent() {
+  const { setUser } = useUserStore();
+
+  useEffect(() => {
+    // 앱 시작 시 기본 유저 목데이터 초기화
+    setUser(user);
+  }, [setUser]);
+
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <Routes>
         {/* 그룹 1: 메인 앱 화면 (하단 탭 바가 있는 레이아웃) */}
@@ -69,6 +80,14 @@ function App() {
         {/* 🆕 404 페이지 - 모든 정의되지 않은 경로를 처리 */}
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
