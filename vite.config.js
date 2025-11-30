@@ -24,5 +24,13 @@ export default defineConfig({
         drop_console: true, // 모든 console.* 제거
       },
     },
+    // 캐시 무효화
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+      },
+    },
   },
 });
