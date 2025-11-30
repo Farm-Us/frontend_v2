@@ -17,7 +17,6 @@ export const communityApi = {
   getPostsDetail: async (postId) => {
     try {
       const response = await api.get(`/posts/${postId}`);
-      console.log('커뮤니티 디테일 response data: ', response);
       return response;
     } catch (error) {
       throw error;
@@ -28,7 +27,6 @@ export const communityApi = {
   createPost: async (id, postData) => {
     try {
       const formData = createFormData(postData);
-      console.log('formData 변환함?:', formData);
       const response = await api.post(`/posts/${id}`, formData);
       return response;
     } catch (error) {

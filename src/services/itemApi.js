@@ -7,7 +7,6 @@ export const itemApi = {
   // POST 요청
   createItem: async (prdId, itemData) => {
     try {
-      console.log('itemApi - createItem - formData:', itemData);
       // const resp = await api.post(`/items/${prdId}`, itemData);
       const resp = await api.post(`/items/${prdId}`, createFormData(itemData));
       return resp;
@@ -20,7 +19,6 @@ export const itemApi = {
   getItems: async (params = {}) => {
     try {
       const resp = await api.get(`/items`, { params });
-      console.log(resp);
       return resp;
     } catch (error) {
       throw error;

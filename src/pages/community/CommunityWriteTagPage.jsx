@@ -36,13 +36,8 @@ export default function CommunityWriteTagPage() {
     queryKey: ['my-products', producerId],
     queryFn: () => itemApi.getItemsProducer(producerId),
     select: (response) => {
-      // API 응답 확인 로그
-      console.log('📦 상품 조회 응답:', response);
-
       // 여러 가능한 응답 구조에 대응
       const products = response?.content || response?.data?.content || response?.data || [];
-      console.log('📦 추출된 상품 목록:', products);
-
       return Array.isArray(products) ? products : [];
     },
     enabled: !!producerId,
@@ -51,21 +46,7 @@ export default function CommunityWriteTagPage() {
 
   // 상품 선택/해제 핸들러
   const handleToggleProduct = (product) => {
-    console.log('🎯 상품 선택 시작:', {
-      productId: product.id,
-      productName: product.itemName || product.name,
-      beforeTaggedProducts: taggedProducts,
-    });
-
     toggleProductTag(product);
-
-    // 상태 변경 후 확인
-    const state = useCommunityWriteStore.getState();
-    console.log('📍 상태 변경 후:', {
-      taggedProducts: state.taggedProducts,
-      taggedProductsDataLength: state.taggedProductsData.length,
-    });
-
     navigate(-1);
   };
 

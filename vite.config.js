@@ -16,4 +16,13 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
   },
+  build: {
+    // Production 빌드 시 console.log 제거
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // 모든 console.* 제거
+      },
+    },
+  },
 });

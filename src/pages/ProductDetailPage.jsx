@@ -61,7 +61,6 @@ export default function ProductDetailPage() {
 
   const handleToggleWishlist = () => {
     // 찜하기 토글 로직
-    console.log('찜하기 토글');
   };
 
   if (loading) {
