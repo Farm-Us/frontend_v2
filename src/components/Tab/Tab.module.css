@@ -1,0 +1,15 @@
+.tab {
+  font-size: 18px;
+  font-weight: 600;
+  color: #bac0c7;
+  text-decoration: none;
+  padding: 8px 4px;
+  border-bottom: 3px solid transparent; /* 기본 밑줄은 투명 처리 */
+  transition: all 0.2s ease-in-out;
+}
+
+.tab.active,
+.tab:hover {
+  color: #3b4149;
+  border-bottom: 3px solid #3b4149;
+}

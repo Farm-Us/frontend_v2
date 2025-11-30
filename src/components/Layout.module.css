@@ -1,83 +1,104 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    max-width: 480px;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* 자식 요소의 absolute 포지셔닝 기준점 */
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    border-bottom: 1px solid #f0f1f3;
-    flex-shrink: 0;
+.headerContainer {
+  position: fixed;
+  top: 0;
+  left: 50%; /* 화면 중앙 기준 */
+  transform: translateX(-50%); /* 중앙 정렬 */
+  width: 100%;
+  max-width: 480px; /* 컨테이너와 동일한 최대 너비 */
+
+  z-index: 1000;
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
-.tabContainer {
-    display: flex;
-    gap: 16px;
+.visible {
+  transform: translateX(-50%) translateY(0); /* 중앙 정렬 + 보이기 */
+  opacity: 1;
 }
 
-.tab {
-    font-size: 18px;
-    font-weight: 600;
-    color: #bac0c7;
-    text-decoration: none;
-    padding: 8px 4px;
-    border-bottom: 3px solid transparent; /* 기본 밑줄은 투명 처리 */
-    transition: all 0.2s ease-in-out;
-}
-
-/* 활성 탭 및 호버 시 스타일 */
-.tab.active, .tab:hover {
-    color: #3b4149;
-    border-bottom: 3px solid #3b4149;
-}
-
-.searchButton {
-    background: none;
-    border: none;
-    cursor: pointer;
+.hidden {
+  transform: translateX(-50%) translateY(-100%); /* 중앙 정렬 + 숨기기 */
+  opacity: 0.9;
 }
 
 .mainContent {
-    flex-grow: 1;
-    overflow-y: auto;
+  flex-grow: 1;
+  /* overflow-y: auto; */
+  /* padding-top: 80px; */
 }
 
+/* 
+.tabContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.tab {
+  font-size: 18px;
+  font-weight: 600;
+  color: #bac0c7;
+  text-decoration: none;
+  padding: 8px 4px;
+  border-bottom: 3px solid transparent; /* 기본 밑줄은 투명 처리 
+  transition: all 0.2s ease-in-out;
+}
+
+/* 활성 탭 및 호버 시 스타일 
+.tab.active,
+.tab:hover {
+  color: #3b4149;
+  border-bottom: 3px solid #3b4149;
+}
+
+.searchButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
 .navBar {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid #f0f1f3;
-    padding: 8px 0;
-    flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #f0f1f3;
+  padding: 8px 0;
+  flex-shrink: 0;
 }
 
 .navLink {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #6a7685;
-    font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #6a7685;
+  font-size: 12px;
 }
 
 .writeButton {
-    position: fixed;
-    bottom: 80px; /* 하단 네비게이션 바 위에 위치 */
-    right: calc(50% - 212px); /* max-width 기준 중앙 정렬 */
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: #15c47e;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
+  position: fixed;
+  bottom: 80px; /* 하단 네비게이션 바 위에 위치 
+  right: calc(50% - 212px); /* max-width 기준 중앙 정렬 
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #15c47e;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+} */

@@ -2,77 +2,128 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import useCommunityWriteStore from '../../store/communityWriteStore';
+import { itemApi } from '../../services/itemApi';
+import { useUserStore } from '../../store/userStore';
 import styles from './CommunityWriteTagPage.module.css';
 
-// 아이콘 컴포넌트 (기존과 동일)
-const ChevronLeftIcon = () => ( <svg width="24" height="24" viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> );
-const CheckIcon = () => ( <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> );
+// 아이콘 컴포넌트
+import { XIcon } from '@/components/Icons';
+import ProductCardRevers from '../../components/productcard/ProductCardRevers';
 
+const CheckIcon = () => (
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
+    <path d='M20 6L9 17l-5-5' stroke='white' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+  </svg>
+);
+
+/**
+ * 커뮤니티 포스트 작성 시 상품 태그 페이지
+ * 판매자가 등록한 상품 목록 중 포스트에 태그할 상품 선택
+ */
 export default function CommunityWriteTagPage() {
-    const navigate = useNavigate();
-    
-    // ✨ [수정] images 상태를 구독하도록 추가합니다.
-    // 이제 이미지 목록이 변경되면 이 컴포넌트가 자동으로 업데이트됩니다.
-    const { images, taggedProducts, toggleProductTag } = useCommunityWriteStore();
-    
-    const [myProducts, setMyProducts] = useState([]);
+  const navigate = useNavigate();
+  const { taggedProducts, toggleProductTag } = useCommunityWriteStore();
+  const producerId = useUserStore((state) => state.producerId);
 
-    useEffect(() => {
-        // 로컬 스토리지에서 등록된 상품 목록을 불러옵니다.
-        const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-        setMyProducts(storedProducts);
-    }, []);
+  // 판매자의 상품 목록 조회
+  const {
+    data: myProducts = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['my-products', producerId],
+    queryFn: () => itemApi.getItemsProducer(producerId),
+    select: (response) => {
+      // API 응답 확인 로그
+      console.log('📦 상품 조회 응답:', response);
 
-    return (
-        <div className={styles.wrapper}>
-            <header className={styles.header}>
-                <button onClick={() => navigate(-1)} className={styles.iconButton}><ChevronLeftIcon /></button>
-                <h1 className={styles.headerTitle}>상품 태그</h1>
-                <button onClick={() => navigate('/community/write-confirm')} className={styles.nextButton}>완료</button>
-            </header>
+      // 여러 가능한 응답 구조에 대응
+      const products = response?.content || response?.data?.content || response?.data || [];
+      console.log('📦 추출된 상품 목록:', products);
 
-            <main className={styles.content}>
-                {/* ✨ [추가] 업로드된 이미지를 보여주는 영역 */}
-                <div className={styles.imagePreviewSection}>
-                    <p className={styles.infoText}>태그를 추가할 이미지를 확인하세요.</p>
-                    <div className={styles.imageScrollContainer}>
-                        {images.length > 0 ? (
-                            images.map((imageSrc, index) => (
-                                <img key={index} src={imageSrc} alt={`업로드 이미지 ${index + 1}`} className={styles.previewImage} />
-                            ))
-                        ) : (
-                            <div className={styles.noImage}>업로드된 이미지가 없습니다.</div>
-                        )}
-                    </div>
-                </div>
+      return Array.isArray(products) ? products : [];
+    },
+    enabled: !!producerId,
+    staleTime: 5 * 60 * 1000,
+  });
 
-                <hr className={styles.divider} />
+  // 상품 선택/해제 핸들러
+  const handleToggleProduct = (product) => {
+    console.log('🎯 상품 선택 시작:', {
+      productId: product.id,
+      productName: product.itemName || product.name,
+      beforeTaggedProducts: taggedProducts,
+    });
 
-                {/* 상품 선택 영역 */}
-                <div className={styles.productSelectionSection}>
-                     <p className={styles.infoText}>이미지와 함께 보여줄 상품을 선택해주세요.</p>
-                    {myProducts.length > 0 ? (
-                        myProducts.map(product => {
-                            const isTagged = taggedProducts.some(p => p.id === product.id);
-                            return (
-                                <div key={product.id} className={styles.productItem} onClick={() => toggleProductTag(product)}>
-                                    <img src={product.mainImage} alt={product.productName} className={styles.productImage} />
-                                    <div className={styles.productInfo}>
-                                        <div className={styles.productBrand}>{product.farmName || '팜어스 농장'}</div>
-                                        <div className={styles.productName}>{product.productName}</div>
-                                    </div>
-                                    <div className={isTagged ? styles.checkboxChecked : styles.checkbox}>
-                                        {isTagged && <CheckIcon />}
-                                    </div>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <p className={styles.infoText}>태그할 수 있는 상품이 없습니다.</p>
-                    )}
-                </div>
-            </main>
-        </div>
-    );
+    toggleProductTag(product);
+
+    // 상태 변경 후 확인
+    const state = useCommunityWriteStore.getState();
+    console.log('📍 상태 변경 후:', {
+      taggedProducts: state.taggedProducts,
+      taggedProductsDataLength: state.taggedProductsData.length,
+    });
+
+    navigate(-1);
+  };
+
+  return (
+    <div className={styles.wrapper}>
+      <header className={styles.header}>
+        <button onClick={() => navigate(-1)} className={styles.iconButton}>
+          <XIcon />
+        </button>
+        <h1 className={styles.headerTitle}>상품 추가</h1>
+        {/* 빈값 */}
+        <div className={styles.nextButton}></div>
+      </header>
+
+      <main className={styles.content}>
+        {/* 로딩 상태 */}
+        {isLoading && (
+          <div className={`${styles.infoText} flex flex-col justify-center items-center h-full w-full`}>
+            <span>상품을 불러오는 중...</span>
+          </div>
+        )}
+
+        {/* 에러 상태 */}
+        {error && (
+          <div className={`${styles.infoText} flex flex-col justify-center items-center h-full w-full`}>
+            <span>상품을 불러올 수 없습니다.</span>
+          </div>
+        )}
+
+        {/* 상품 목록 */}
+        {!isLoading && !error && myProducts.length > 0 ? (
+          myProducts.map((product) => {
+            // API에서 itemId를 id로 정규화
+            const normalizedProduct = {
+              ...product,
+              id: product.itemId || product.id, // itemId를 id로 매핑
+            };
+
+            return (
+              <ProductCardRevers
+                key={normalizedProduct.id}
+                itemName={product.itemName || product.name}
+                itemPrice={product.itemPrice || product.price}
+                rating={product?.rating}
+                reviews={product?.reviews || 0}
+                image={product?.mainImage || product?.image || product?.thumbnailImageUrl}
+                isSelected={taggedProducts?.some((p) => p.id === normalizedProduct.id)}
+                onSelect={() => handleToggleProduct(normalizedProduct)}
+              />
+            );
+          })
+        ) : !isLoading && !error ? (
+          <div className={`${styles.infoText} flex flex-col justify-center items-center h-full w-full`}>
+            <span>등록한 상품이 없습니다.</span>
+            <p style={{ fontSize: '12px', marginTop: '8px' }}>상품을 먼저 등록해주세요.</p>
+          </div>
+        ) : null}
+      </main>
+    </div>
+  );
 }

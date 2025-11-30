@@ -1,21 +1,21 @@
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 상단 정렬 */
-    min-height: 100vh;
-    background-color: #f0f1f3;
-    padding: 20px 0; /* 위아래 여백 추가 */
-  }
-  
-  .mobileScreen {
-    width: 100%;
-    max-width: 480px;
-    min-height: calc(100vh - 40px); /* 위아래 여백만큼 뺌 */
-    background-color: #fff;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 20px; /* 모바일 화면처럼 보이게 둥근 모서리 추가 */
-    position: relative;
-    overflow: hidden; /* 내부 스크롤을 위해 */
-    display: flex;
-    flex-direction: column;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 상단 정렬 */
+  min-height: 100vh;
+  background-color: #f0f1f3;
+  /* padding: 20px 0; 위아래 여백 추가 */
+}
+
+.mobileScreen {
+  width: 100%;
+  max-width: 480px;
+  min-height: calc(100vh - 40px); /* 위아래 여백만큼 뺌 */
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* 모바일 화면처럼 보이게 둥근 모서리 추가 */
+  position: relative;
+  overflow: hidden; /* 내부 스크롤을 위해 */
+  display: flex;
+  flex-direction: column;
+}

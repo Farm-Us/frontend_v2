@@ -1,0 +1,233 @@
+/* src/pages/OrderCompletePage.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f9fa;
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f1f3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.headerTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Content --- */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 54px; */
+  padding: 0 20px 20px 20px;
+  overflow-y: auto;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 40px 0 20px 0;
+}
+
+.buttonWrapper {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+/* --- Icon --- */
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 20px;
+  margin-bottom: 30px; */
+}
+
+.checkIcon {
+  width: 59px;
+  height: 59px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Message Section --- */
+.messageSection {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.mainTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #3b3b3b;
+  margin: 0 0 10px 0;
+  padding: 0;
+  line-height: 32px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3b3b3b;
+  margin: 0;
+  padding: 0;
+  line-height: 20px;
+  white-space: pre-line;
+}
+
+/* --- Order Card --- */
+.orderCard {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 335px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cardTitleText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b3b3b;
+  margin: 0;
+  padding: 0;
+  line-height: 26px;
+}
+
+/* --- Info Section --- */
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.infoLabel {
+  color: #3b4149;
+}
+
+.infoValue {
+  color: #191f28;
+}
+
+.totalPrice {
+  color: #15c47e;
+  font-weight: 500;
+}
+
+/* --- Divider --- */
+.divider {
+  height: 1px;
+  background-color: #9ca3ad;
+  margin: 20px 0;
+}
+
+/* --- Shipping Section --- */
+.shippingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.shippingLabel {
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+}
+
+.shippingName {
+  color: #191f28;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+}
+
+.shippingAddress {
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+}
+
+.shippingPhone {
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+}
+
+.homeButton {
+  width: 100%;
+  height: 52px;
+  background-color: #15c47e;
+  border: none;
+  border-radius: 16px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  line-height: 22px;
+}
+
+.homeButton:hover {
+  background-color: #12a86f;
+}
+
+.homeButton:active {
+  background-color: #0f8c5f;
+}
+
+/* --- Responsive --- */
+@media (min-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .footer {
+    max-width: 100%;
+  }
+}

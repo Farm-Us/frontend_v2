@@ -7,7 +7,7 @@ const getApiConfig = () => {
   const baseConfig = {
     timeout: 10000,
     headers: {
-      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
     },
   };
 
@@ -29,18 +29,80 @@ const getApiConfig = () => {
 const api = axios.create(getApiConfig());
 
 // 공통 요청 인터셉터 - 모든 환경에서 토큰 처리
+// api.interceptors.request.use(
+//   (requestConfig) => {
+//     // 토큰이 있으면 헤더에 추가 (모든 환경)
+//     // const token = localStorage.getItem('token');
+//     // if (token) {
+//     //   requestConfig.headers.Authorization = `Bearer ${token}`;
+//     // }
+//     // FormData인 경우 Content-Type 헤더 제거 (브라우저가 자동 설정)
+//     if (requestConfig.data instanceof FormData) {
+//       delete requestConfig.headers['Content-Type'];
+
+//       if (config.isDevelopment) {
+//         console.log('📎 FormData detected - Content-Type header removed');
+//         console.log('📤 FormData entries:');
+//         console.log(requestConfig.data);
+//         // for (let [key, value] of requestConfig.data.entries()) {
+//         //   console.log(`  ${key}:`, value);
+//         // }
+//       }
+//     }
+//     // 개발 환경에서만 로깅
+//     if (config.isDevelopment) {
+//       console.log('🚀 API Request:', requestConfig.method?.toUpperCase(), requestConfig.url);
+//       if (requestConfig.data) {
+//         console.log('📤 Request Data:', requestConfig.data);
+//       }
+//     }
+
+//     return requestConfig;
+//   },
+//   (error) => {
+//     if (config.isDevelopment) {
+//       console.error('❌ 요청 에러:', error);
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+// api.js의 request interceptor 수정
 api.interceptors.request.use(
   (requestConfig) => {
-    // 토큰이 있으면 헤더에 추가 (모든 환경)
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   requestConfig.headers.Authorization = `Bearer ${token}`;
-    // }
+    // FormData인 경우 Content-Type 헤더 제거 (브라우저가 자동 설정)
+    if (requestConfig.data instanceof FormData) {
+      delete requestConfig.headers['Content-Type'];
+
+      if (config.isDevelopment) {
+        console.log('📎 FormData detected - Content-Type header removed');
+
+        // FormData 내용 확인 - 올바른 방법
+        console.log('📤 FormData entries:');
+        let entryCount = 0;
+        try {
+          for (let [key, value] of requestConfig.data.entries()) {
+            entryCount++;
+            if (value instanceof File) {
+              console.log(`  ${key}: File(${value.name}, ${value.type}, ${value.size}bytes)`);
+            } else {
+              console.log(`  ${key}: ${value}`);
+            }
+          }
+          console.log(`📊 Interceptor에서 확인된 항목 수: ${entryCount}`);
+        } catch (error) {
+          console.error('❌ FormData entries 확인 중 오류:', error);
+        }
+
+        // FormData 객체 자체는 {}로 표시되는 것이 정상
+        console.log('FormData 객체:', requestConfig.data);
+      }
+    }
 
     // 개발 환경에서만 로깅
     if (config.isDevelopment) {
       console.log('🚀 API Request:', requestConfig.method?.toUpperCase(), requestConfig.url);
-      if (requestConfig.data) {
+      // FormData가 아닌 경우만 데이터 로깅
+      if (requestConfig.data && !(requestConfig.data instanceof FormData)) {
         console.log('📤 Request Data:', requestConfig.data);
       }
     }

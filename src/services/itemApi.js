@@ -1,12 +1,15 @@
 // services/itemApi.js
 import { get } from 'react-hook-form';
 import api from './api';
+import { createFormData } from '../utils/formData';
 
 export const itemApi = {
   // POST 요청
   createItem: async (prdId, itemData) => {
     try {
-      const resp = await api.post(`/items/${prdId}`, itemData);
+      console.log('itemApi - createItem - formData:', itemData);
+      // const resp = await api.post(`/items/${prdId}`, itemData);
+      const resp = await api.post(`/items/${prdId}`, createFormData(itemData));
       return resp;
     } catch (error) {
       throw error;
@@ -17,6 +20,7 @@ export const itemApi = {
   getItems: async (params = {}) => {
     try {
       const resp = await api.get(`/items`, { params });
+      console.log(resp);
       return resp;
     } catch (error) {
       throw error;
@@ -43,7 +47,7 @@ export const itemApi = {
 
   getItemsCategories: async (params = {}) => {
     try {
-      const resp = await api.get(`/items/category/`, { params });
+      const resp = await api.get(`/items/category`);
       return resp;
     } catch (error) {
       throw error;

@@ -1,38 +1,245 @@
 /* Figma CSS를 기반으로 재구성 및 정리 */
-.div { width: 100%; position: relative; background-color: #fff; font-family: 'Pretendard', sans-serif; display: flex; flex-direction: column; align-items: center; }
-.header { position: fixed; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; width: 100%; height: 54px; background-color: #fff; padding: 0 16px; border-bottom: 1px solid #f0f1f3; }
-.headerButton { background: none; border: none; cursor: pointer; padding: 0; }
-.div26 { font-size: 18px; font-weight: 600; color: #3b4149; text-align: center; flex-grow: 1; }
-.imgIcon { width: 100%; height: 375px; object-fit: cover; }
+.div {
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  font-family: 'Pretendard', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.header {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+  height: 54px;
+  background-color: #fff;
+  padding: 0 16px;
+  border-bottom: 1px solid #f0f1f3;
+}
+.headerButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.div26 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b4149;
+  text-align: center;
+  flex-grow: 1;
+}
+.imgIcon {
+  width: 100%;
+  height: 375px;
+  padding-top: 54px; /* 헤더 높이만큼 패딩 추가 */
+  /* object-fit: cover; */
+  object-fit: fill;
+}
 
-.infoAndTab { width: 100%; background-color: #fff; padding: 20px; border-bottom: 6px solid #f0f1f3; }
-.info { display: flex; flex-direction: column; gap: 16px; }
-.brand { display: flex; align-items: center; justify-content: space-between; }
-.brand1 { display: flex; align-items: center; gap: 8px; }
-.brandChild { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-.div1 { font-size: 16px; font-weight: 500; color: #3b4149; }
-.productInfo { display: flex; flex-direction: column; gap: 8px; }
-.kg { font-size: 20px; font-weight: 600; color: #191f28; line-height: 28px; }
-.starParent { display: flex; align-items: center; gap: 4px; color: #bac0c7; font-size: 14px; }
-.div2 { line-height: 20px; }
-.price { display: flex; align-items: center; gap: 8px; }
-.b { font-size: 18px; font-weight: 700; color: #15c47e; line-height: 25px; }
-.b1 { font-size: 22px; font-weight: 700; color: #191f28; line-height: 30px; }
-.div4 { font-size: 16px; color: #6a7685; text-decoration: line-through; }
-.listParent { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-.list { display: flex; align-items: center; justify-content: space-between; font-size: 15px; color: #3b4149; line-height: 22px; }
-.div5 { color: #6a7685; }
-.cj { text-align: right; }
+.infoAndTab {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-bottom: 6px solid #f0f1f3;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brandChild {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.div1 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #3b4149;
+}
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kg {
+  font-size: 20px;
+  font-weight: 600;
+  color: #191f28;
+  line-height: 28px;
+}
+.starParent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #bac0c7;
+  font-size: 14px;
+}
+.div2 {
+  line-height: 20px;
+}
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.b {
+  font-size: 18px;
+  font-weight: 700;
+  color: #15c47e;
+  line-height: 25px;
+}
+.b1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #191f28;
+  line-height: 30px;
+}
+.div4 {
+  font-size: 16px;
+  color: #6a7685;
+  text-decoration: line-through;
+}
+.listParent {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  border: 1px solid #f0f1f3;
+  border-radius: 8px;
+  padding: 16px;
+}
+.list {
+  display: grid;
+  grid-template-columns: 80px 120px;
+  align-items: center;
+  column-gap: 12px;
+  font-size: 15px;
+  color: #3b4149;
+  line-height: 22px;
+}
+/* 선택사항: 왼쪽 라벨 스타일 */
+.list span:first-child {
+  font-weight: 500;
+  color: #5b6068;
+  text-align: left;
+}
 
-.detailContent { width: 100%; padding: 20px; display: flex; flex-direction: column; gap: 30px; }
-.contents { display: flex; flex-direction: column; gap: 12px; }
-.contentsChild { width: 100%; aspect-ratio: 375/280; object-fit: cover; border-radius: 8px; }
-.b2 { font-size: 18px; font-weight: 600; color: #191f28; line-height: 25px; }
-.div22 { font-size: 16px; color: #3b4149; line-height: 24px; white-space: pre-line; }
+/* 선택사항: 오른쪽 값 스타일 */
+.list span:last-child {
+  font-weight: 600;
+  color: #1b1d1f;
+  text-align: left; /* 완전히 표처럼 왼쪽 정렬 */
+}
+.div5 {
+  color: #6a7685;
+}
+.cj {
+  text-align: right;
+}
 
-.bottomButton { position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff; border-top: 1px solid #f0f1f3; padding: 16px; display: flex; align-items: center; justify-content: space-between; }
-.buttonGroup { display: flex; }
-.button, .button1 { width: 167px; height: 52px; border-radius: 16px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.button { background-color: #f0f1f3; color: #3b4149; margin-right: 8px; }
-.button1 { background-color: #15c47e; color: #fff; }
-.div19 { line-height: 22px; }
+.detailContent {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.contents {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.contentsChild {
+  width: 100%;
+  aspect-ratio: 375/280;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.b2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #191f28;
+  line-height: 25px;
+}
+.div22 {
+  font-size: 16px;
+  color: #3b4149;
+  line-height: 24px;
+  white-space: pre-line;
+}
+
+.bottomButton {
+  position: fixed;
+  /* width: 480px; */
+  width: 100%;
+  max-width: 480px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* 자신의 너비의 절반 만큼 되돌리기 */
+  background-color: #fff;
+  border-top: 1px solid #f0f1f3;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.buttonGroup {
+  display: flex;
+}
+.button,
+.button1 {
+  width: 167px;
+  height: 52px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button {
+  background-color: #e8f9f2;
+  color: #15c47e;
+  margin-right: 8px;
+}
+.button1 {
+  background-color: #15c47e;
+  color: #fff;
+}
+.div19 {
+  line-height: 22px;
+}
+
+@media (max-width: 400px) {
+  .button,
+  .button1 {
+    width: 8rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .button,
+  .button1 {
+    width: 7rem;
+  }
+}

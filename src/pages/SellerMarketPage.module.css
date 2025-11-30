@@ -1,29 +1,158 @@
 /* Figma CSS 기반 재구성 */
-.div { width: 100%; position: relative; background-color: #fff; padding-bottom: 100px; font-family: 'Pretendard', sans-serif; }
-.header { display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 54px; border-bottom: 1px solid #f0f1f3; }
-.headerButton { background: none; border: none; cursor: pointer; }
-.div1 { font-size: 18px; font-weight: 600; color: #3b4149; }
+.div {
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  padding-bottom: 100px;
+  font-family: 'Pretendard', sans-serif;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 54px;
+  border-bottom: 1px solid #f0f1f3;
+  top: 0;
+  position: fixed;
+  width: 100%;
+  max-width: 480px;
+  background-color: #fff;
+  z-index: 10;
+}
+.headerButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.div1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b4149;
+}
 
-.profileSection { display: flex; flex-direction: column; align-items: center; padding: 24px; gap: 8px; }
-.profileImage { width: 108px; height: 108px; border-radius: 50%; object-fit: cover; }
-.marketName { font-size: 18px; font-weight: 600; color: #3b4149; }
-.marketIntro { font-size: 14px; color: #6a7685; }
-.editProfileButton { width: 100%; padding: 12px; background-color: #e8f9f2; color: #15c47e; border: none; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+.profileSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 8px;
+}
+.profileImage {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.marketName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b4149;
+}
+.marketIntro {
+  font-size: 14px;
+  color: #6a7685;
+}
+.editProfileButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #e8f9f2;
+  color: #15c47e;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+}
 
-.tabGroup { display: flex; border-bottom: 2px solid #f0f1f3; }
-.tabActive, .tabInactive { flex: 1; text-align: center; padding: 12px 0; font-size: 16px; font-weight: 600; cursor: pointer; }
-.tabActive { color: #3b4149; border-bottom: 3px solid #3b4149; }
-.tabInactive { color: #bac0c7; }
+.tabGroup {
+  display: flex;
+  border-bottom: 2px solid #f0f1f3;
+}
+.tabActive,
+.tabInactive {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tabActive {
+  color: #3b4149;
+  border-bottom: 3px solid #3b4149;
+}
+.tabInactive {
+  color: #bac0c7;
+}
 
-.productList { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-.card { display: flex; gap: 8px; padding: 12px 0; cursor: pointer; }
-.imgIcon1 { width: 92px; height: 92px; border-radius: 8px; object-fit: cover; }
-.info { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-.kg { font-size: 16px; font-weight: 500; color: #3b4149; }
-.price { display: flex; align-items: center; gap: 4px; font-size: 18px; font-weight: 600; }
-.div10 { color: #fe7564; } /* 할인율 */
-.div7 { color: #191f28; } /* 최종 가격 */
-.emptyMessage { padding: 40px 20px; text-align: center; color: #6a7685; line-height: 1.5; }
+.productList {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.card {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.imgIcon1 {
+  width: 92px;
+  height: 92px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.kg {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b4149;
+}
+.price {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.div10 {
+  color: #fe7564;
+} /* 할인율 */
+.div7 {
+  color: #191f28;
+} /* 최종 가격 */
+.emptyMessage {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6a7685;
+  line-height: 1.5;
+}
 
-.floatingButton { position: fixed; bottom: 30px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background-color: #15c47e; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-.floatingButton svg { width: 28px; height: 28px; }
+.floatingButton {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #15c47e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.floatingButton svg {
+  width: 28px;
+  height: 28px;
+}

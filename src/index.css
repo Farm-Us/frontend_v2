@@ -1,3 +1,9 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* src/index.css */
 /* -------------------------------------------------- */
 /* 1. 박스 크기 계산법 통일 (레이아웃의 기본) */
@@ -21,7 +27,9 @@
 /* body에 기본 폰트와 배경색 등을 설정합니다. */
 body {
   margin: 0; /* 기본 마진 제거 */
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -40,22 +48,31 @@ svg {
   display: block; /* 이미지 아래의 불필요한 여백 제거 */
 }
 
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html,
 body,
 #root {
-   --primary-color: #00AB55;
-   --text-color: #333;
-   width: 100%;
-   height: 100%;
-   margin: 0;
-   padding: 0;
-   background-color: #f3f4f6; /* 전체 페이지 배경색 */
-   font-family: 'Pretendard', sans-serif; /* 기본 폰트를 Pretendard로 설정 */
+  --primary-color: #00ab55;
+  --text-color: #333;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f3f4f6; /* 전체 페이지 배경색 */
+  font-family: 'Pretendard', sans-serif; /* 기본 폰트를 Pretendard로 설정 */
 }
 
+.hide-scrollbar {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE and Edge */
+  -ms-overflow-style: none;
+
+  /* 터치 스크롤 개선 */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

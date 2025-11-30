@@ -1,4 +1,5 @@
 // services/communityApi.js
+import { createFormData } from '../utils/formData';
 import api from './api';
 
 export const communityApi = {
@@ -12,10 +13,23 @@ export const communityApi = {
     }
   },
 
+  // GET 요청: 디테일
+  getPostsDetail: async (postId) => {
+    try {
+      const response = await api.get(`/posts/${postId}`);
+      console.log('커뮤니티 디테일 response data: ', response);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   // POST 요청
   createPost: async (id, postData) => {
     try {
-      const response = await api.post(`/posts/${id}`, postData);
+      const formData = createFormData(postData);
+      console.log('formData 변환함?:', formData);
+      const response = await api.post(`/posts/${id}`, formData);
       return response;
     } catch (error) {
       throw error;
