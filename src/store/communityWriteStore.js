@@ -57,13 +57,6 @@ const useCommunityWriteStore = create((set) => ({
       const productId = product?.id || product?.itemId || product;
       const isAlreadyTagged = state.taggedProducts.some((p) => p.id === productId);
 
-      console.log('🏷️ 상품 태그 토글:', {
-        productId,
-        productName: product?.itemName || product?.name,
-        isAlreadyTagged,
-        currentTagsCount: state.taggedProducts.length,
-      });
-
       let newTaggedProducts;
       let newTaggedProductsData;
 
@@ -71,7 +64,6 @@ const useCommunityWriteStore = create((set) => ({
         // 이미 태그된 경우 제거
         newTaggedProducts = state.taggedProducts.filter((p) => p.id !== productId);
         newTaggedProductsData = state.taggedProductsData.filter((p) => p.id !== productId);
-        console.log('❌ 상품 태그 제거:', newTaggedProducts.length);
       } else {
         // 태그되지 않은 경우 추가
         // 정규화된 상품 객체 생성
@@ -81,7 +73,6 @@ const useCommunityWriteStore = create((set) => ({
         };
         newTaggedProducts = [...state.taggedProducts, normalizedProduct];
         newTaggedProductsData = [...state.taggedProductsData, normalizedProduct];
-        console.log('✅ 상품 태그 추가:', newTaggedProducts.length);
       }
 
       return {

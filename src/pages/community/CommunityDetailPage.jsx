@@ -13,7 +13,6 @@ import PostInteractionBar from '@/components/social/PostInteractionBar';
 export default function CommunityDetailPage() {
   const { id } = useParams();
   const { data: post, isLoading, error } = fetchById(id);
-  console.log('📖 포스트 데이터:', post);
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
@@ -26,12 +25,10 @@ export default function CommunityDetailPage() {
 
   const handleComment = () => {
     // 댓글 창 열기
-    console.log('댓글 클릭');
   };
 
   const handleShare = () => {
     // 북마크 기능
-    console.log('북마크 클릭');
   };
 
   // 로딩 상태

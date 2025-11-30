@@ -21,8 +21,6 @@ export default function MainPage() {
   // TODO: 접속과 동시에 유저데이터 localstorage 삽입
   const { initializeUser } = useUserInfo();
   // 불러오는지 확인
-  // const { data: categoryData } = useCategoryCall();
-  // console.log(categoryData);
 
   // 칩 선택
   const [activeChip, setActiveChip] = useState('베스트');
