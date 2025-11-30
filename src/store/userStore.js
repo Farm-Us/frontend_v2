@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+// localStorage 키
+const SELLER_MODE_KEY = 'farm-us-seller-mode';
+
 // Zustand 스토어 생성
 export const useUserStore = create((set) => ({
   // --- 유저정보 ---
@@ -29,4 +32,24 @@ export const useUserStore = create((set) => ({
       career: data?.career,
       isSeller: true,
     }),
+
+  // --- 판매자 모드 전환 ---
+  toggleSellerMode: (isSeller) => {
+    // localStorage에 저장
+    localStorage.setItem(SELLER_MODE_KEY, JSON.stringify(isSeller));
+    set({ isSeller });
+  },
+
+  // --- localStorage에서 판매자 모드 복원 ---
+  initializeSellerMode: () => {
+    try {
+      const saved = localStorage.getItem(SELLER_MODE_KEY);
+      if (saved !== null) {
+        const isSeller = JSON.parse(saved);
+        set({ isSeller });
+      }
+    } catch (error) {
+      console.error('❌ 판매자 모드 복원 실패:', error);
+    }
+  },
 }));

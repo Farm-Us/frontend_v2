@@ -25,7 +25,7 @@ export default function ProductCard({ product, type = 'small' }) {
       </div>
 
       <div className='mt-2'>
-        <p className='text-sm text-gray-700 font-medium truncate'>{product.itemName}</p>
+        <p className='text-sm text-gray-700 font-medium truncate'>{product.itemName || product.name}</p>
 
         <div className='flex items-center mt-1'>
           <span className='text-red-500 font-bold'>{product.discount}</span>

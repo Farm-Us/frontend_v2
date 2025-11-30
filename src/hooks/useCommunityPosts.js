@@ -1,6 +1,7 @@
 // src/hooks/useCommunityPosts.js
 import { useState, useEffect } from 'react';
 import { communityApi } from '@/services/communityApi';
+import { postApi } from '@/services/postApi';
 import { farmerStories } from '../data';
 import { useQuery } from '@tanstack/react-query';
 
@@ -121,31 +122,15 @@ export const useCommunityPosts = (initialParams = {}) => {
 
 // 포스트 1개만 가져오기
 export const fetchById = (postId) => {
-  // 임의 목데이터로 보내기
-  const { data, isStale } = useQuery({
+  const { data, isLoading, error, isStale } = useQuery({
     queryKey: ['communityPost', postId],
-    // queryFn: () => communityApi.getPostsDetail(postId),
-    queryFn: () =>
-      Promise.resolve({
-        postId: 0,
-        title: '목데이터 제목',
-        content: '목데이터 내용',
-        producerId: 1,
-        mediaUrls: ['https://via.placeholder.com/150', 'https://via.placeholder.com/150'],
-        taggedProducts: [
-          {
-            // productName: '목데이터 상품',
-            // productId: 12345,
-            // productImageUrl: 'https://via.placeholder.com/150',
-            name: '목데이터 상품',
-            id: 12345,
-            image: 'https://via.placeholder.com/150',
-            price: 10000,
-          },
-        ],
-      }),
+    queryFn: async () => {
+      const response = await postApi.getPostDetail(postId);
+      return response;
+    },
     staleTime: 10 * 60 * 1000, // 60분
+    enabled: !!postId, // postId가 있을 때만 요청
   });
-  // setPosts([data]);
-  return { data, isStale };
+
+  return { data, isLoading, error, isStale };
 };

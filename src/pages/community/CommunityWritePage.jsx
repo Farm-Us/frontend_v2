@@ -5,6 +5,7 @@ import useCommunityWriteStore from '../../store/communityWriteStore';
 import styles from './CommunityWritePage.module.css';
 // --- 컴포넌트 ---
 import ImageCarousel from '../../components/carousel/ImageCarousel';
+import TaggedProductsList from '../../components/community/TaggedProductsList';
 
 // --- 아이콘 ---
 import { ChevronLeftIcon } from '@/components/Icons';
@@ -18,8 +19,21 @@ export default function CommunityWritePage() {
   const images = useCommunityWriteStore((state) => state.images);
   const addImages = useCommunityWriteStore((state) => state.addImages);
   const removeImage = useCommunityWriteStore((state) => state.removeImage);
+  const taggedProducts = useCommunityWriteStore((state) => state.taggedProducts);
+  const taggedProductsData = useCommunityWriteStore((state) => state.taggedProductsData);
+  const toggleProductTag = useCommunityWriteStore((state) => state.toggleProductTag);
+
   // react-hook-form + zustand custom hook
   const { register, handleSubmit, onSubmit, errors, isValid } = useCommunityWriteForm();
+
+  // 상품 태그 제거 핸들러
+  const handleRemoveTag = (productId) => {
+    // taggedProducts에서 해당 상품 찾아서 toggleProductTag 호출
+    const productToRemove = taggedProducts.find((p) => p.id === productId || p.itemId === productId);
+    if (productToRemove) {
+      toggleProductTag(productToRemove);
+    }
+  };
 
   // const categories = ['공예품', '농산물', '수산물', '농장체험', '축산업'];
 
@@ -51,8 +65,16 @@ export default function CommunityWritePage() {
         <div className='py-4'>
           {/* 이미지 미리보기 추가 */}
           <ImageCarousel images={images} removeImage={removeImage} mode='edit' />
+
+          {/* 태그된 상품 목록 */}
+          <TaggedProductsList
+            taggedProductIds={taggedProducts}
+            products={taggedProductsData}
+            onRemoveTag={handleRemoveTag}
+          />
+
           <textarea
-            className={`pt-8 ${styles.textarea}`}
+            className={`pt-1 ${styles.textarea}`}
             placeholder='이런 저런 상품 이야기를 나누어보세요.&#10;어떤 사진인지 짧은 소개로 시작해보세요.'
             {...register('content', { required: '내용을 입력해주세요.' })}
           />

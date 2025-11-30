@@ -8,6 +8,7 @@ export default function ProductCardRevers({
   rating = 0.0,
   reviews = 0,
   image = 'https://placehold.co/80x80',
+  isSelected = false,
   onSelect,
 }) {
   const discountPrice = (discount, price) => {
@@ -44,9 +45,14 @@ export default function ProductCardRevers({
 
       {/* --- 선택 버튼 --- */}
       <button
-        onClick={onSelect}
-        className='self-end sm:self-center px-3 py-2 bg-green-100 text-green-500 text-sm font-medium rounded-xl hover:bg-green-200 transition-colors'>
-        선택
+        onClick={() => {
+          console.log('✅ 상품 선택 클릭:', { itemName, itemPrice, isSelected });
+          onSelect();
+        }}
+        className={`self-end sm:self-center px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+          isSelected ? 'bg-green-500 text-white' : 'bg-green-100 text-green-500 hover:bg-green-200'
+        }`}>
+        {isSelected ? '✓ 선택됨' : '선택'}
       </button>
     </div>
   );

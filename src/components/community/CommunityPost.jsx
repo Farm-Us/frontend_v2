@@ -32,11 +32,11 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
   const onProductClick = (id) => {
     // 상품 디테일로 이동
     console.log('클릭한 상품', id);
-    // navigation(`/product-detail/${id}`)
+    navigation(`/product-detail/${id}`);
   };
 
   return (
-    <article className='w-full py-12'>
+    <article className='w-full py-6'>
       {/* <PostHeader user={post.user} /> */}
       <PostHeader user={seller} />
 
@@ -50,10 +50,7 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
 
       {/* 상품 데이터 */}
       {Array.isArray(post?.items) && post?.items.length > 0 && (
-        <div
-          // onClick={() => navigation(`/product-detail/${post.id}`)}
-          onClick={() => console.log('상세페이지 이동해야함')}
-          className='hover:cursor-pointer'>
+        <div className='hover:cursor-pointer'>
           <LinkedProductList products={post?.items} onProductClick={onProductClick} />
         </div>
       )}

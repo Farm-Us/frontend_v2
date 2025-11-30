@@ -36,22 +36,22 @@ export const useProductDetail = (productId) => {
           {
             title: data.origin,
             content: data.originDetails,
-            image: data.originImage,
+            image: data.originImageUrl,
           },
           {
             title: data.farmingMethod,
             content: data.farmingDetails,
-            image: data.farmingImage,
+            image: data.farmingImageUrl,
           },
           {
             title: data.manageMethod,
             content: data.manageDetails,
-            image: data.manageImage,
+            image: data.manageImageUrl,
           },
           {
             title: data.packageMethod,
             content: data.packageDetails,
-            image: data.packageImage,
+            image: data.packageImageUrl,
           },
         ];
         return {

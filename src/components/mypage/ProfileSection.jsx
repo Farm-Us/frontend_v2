@@ -3,12 +3,27 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import DefaultImage from '@/assets/images/UserProfile.jpg';
 import { useUserInfo, useUserCheck } from '../../hooks/useUserInfo';
+import { useUserStore } from '../../store/userStore';
 import styles from './ProfileSection.module.css';
 
 export default function ProfileSection({ type = 'customer' }) {
   const isSeller = type === 'seller';
   const { guestAuth, sellerAuth } = useUserInfo();
   const { user } = useUserCheck();
+  const { toggleSellerMode } = useUserStore();
+
+  const handleToggleMode = () => {
+    console.log('전환 버튼 클릭!', { currentMode: isSeller ? 'seller' : 'customer' });
+    if (isSeller) {
+      // 농부 -> 고객으로 전환
+      guestAuth();
+      toggleSellerMode(false);
+    } else {
+      // 고객 -> 농부로 전환
+      sellerAuth();
+      toggleSellerMode(true);
+    }
+  };
 
   return (
     <div className={clsx('w-full flex items-center justify-between', isSeller ? 'pt-4 px-5 pb-6' : 'h-[48px] p-4')}>
@@ -36,10 +51,7 @@ export default function ProfileSection({ type = 'customer' }) {
       {/* 전환 버튼 */}
       <Link
         to={isSeller ? '/mypage' : '/seller-mypage'}
-        onClick={() => {
-          console.log('전환 버튼 클릭!');
-          isSeller ? guestAuth() : sellerAuth();
-        }}
+        onClick={() => handleToggleMode()}
         className={clsx(
           'px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap flex-shrink-0',
           isSeller ? 'bg-green-100 text-green-500 ' : 'bg-green-500 text-white'

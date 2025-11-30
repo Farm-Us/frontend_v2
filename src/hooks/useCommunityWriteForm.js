@@ -72,20 +72,30 @@ export default function useCommunityWriteForm() {
       images: images || [],
     };
 
+    console.log('📋 전송 준비 데이터:', {
+      title: params.title,
+      content: params.content?.substring(0, 50),
+      itemIds: params.itemIds,
+      imagesCount: params.images.length,
+    });
+
     // 데이터 매핑
     const mappedData = communityWriteMapper(params);
+
+    console.log('✅ 최종 전송 준비 완료:', mappedData);
 
     // API 호출
     const saveItem = savePostMutation.mutateAsync(mappedData);
     await toast.promise(saveItem, {
       loading: '글을 올리는 중...',
       success: (resp) => {
+        console.log('✅ 글 올리기 성공:', resp);
         reset();
         navigate('/community', { replace: true });
         return resp?.message || '글이 성공적으로 올려졌습니다.';
       },
       error: (error) => {
-        console.error('포스트 저장 실패:', error);
+        console.error('❌ 포스트 저장 실패:', error);
         return error?.message || '글 올리기에 실패했습니다.';
       },
     });

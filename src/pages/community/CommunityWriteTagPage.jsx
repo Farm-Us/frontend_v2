@@ -35,14 +35,37 @@ export default function CommunityWriteTagPage() {
   } = useQuery({
     queryKey: ['my-products', producerId],
     queryFn: () => itemApi.getItemsProducer(producerId),
-    select: (response) => response?.data?.content || [],
+    select: (response) => {
+      // API 응답 확인 로그
+      console.log('📦 상품 조회 응답:', response);
+
+      // 여러 가능한 응답 구조에 대응
+      const products = response?.content || response?.data?.content || response?.data || [];
+      console.log('📦 추출된 상품 목록:', products);
+
+      return Array.isArray(products) ? products : [];
+    },
     enabled: !!producerId,
     staleTime: 5 * 60 * 1000,
   });
 
   // 상품 선택/해제 핸들러
   const handleToggleProduct = (product) => {
+    console.log('🎯 상품 선택 시작:', {
+      productId: product.id,
+      productName: product.itemName || product.name,
+      beforeTaggedProducts: taggedProducts,
+    });
+
     toggleProductTag(product);
+
+    // 상태 변경 후 확인
+    const state = useCommunityWriteStore.getState();
+    console.log('📍 상태 변경 후:', {
+      taggedProducts: state.taggedProducts,
+      taggedProductsDataLength: state.taggedProductsData.length,
+    });
+
     navigate(-1);
   };
 
@@ -74,18 +97,26 @@ export default function CommunityWriteTagPage() {
 
         {/* 상품 목록 */}
         {!isLoading && !error && myProducts.length > 0 ? (
-          myProducts.map((product) => (
-            <ProductCardRevers
-              key={product.id}
-              itemName={product.itemName || product.name}
-              itemPrice={product?.itemPrice || product?.price}
-              rating={product?.rating}
-              reviews={product?.reviews || 0}
-              image={product?.mainImage || product?.image}
-              isSelected={taggedProducts?.includes(product.id)}
-              onSelect={() => handleToggleProduct(product)}
-            />
-          ))
+          myProducts.map((product) => {
+            // API에서 itemId를 id로 정규화
+            const normalizedProduct = {
+              ...product,
+              id: product.itemId || product.id, // itemId를 id로 매핑
+            };
+
+            return (
+              <ProductCardRevers
+                key={normalizedProduct.id}
+                itemName={product.itemName || product.name}
+                itemPrice={product.itemPrice || product.price}
+                rating={product?.rating}
+                reviews={product?.reviews || 0}
+                image={product?.mainImage || product?.image || product?.thumbnailImageUrl}
+                isSelected={taggedProducts?.some((p) => p.id === normalizedProduct.id)}
+                onSelect={() => handleToggleProduct(normalizedProduct)}
+              />
+            );
+          })
         ) : !isLoading && !error ? (
           <div className={`${styles.infoText} flex flex-col justify-center items-center h-full w-full`}>
             <span>등록한 상품이 없습니다.</span>

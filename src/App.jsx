@@ -24,6 +24,8 @@ import ProductPreviewPage from './pages/ProductPreviewPage';
 import SellerMarketPage from './pages/SellerMarketPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ProductRegistrationConfirmation from './pages/ProductRegistrationConfirmation';
+import CartPage from './pages/CartPage';
+import OrderCompletePage from './pages/OrderCompletePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // --- 커뮤니티 글쓰기 페이지 ---
@@ -38,12 +40,15 @@ import { user, seller } from './data';
 import { useUserStore } from './store/userStore';
 
 function AppContent() {
-  const { setUser } = useUserStore();
+  const { setUser, initializeSellerMode } = useUserStore();
 
   useEffect(() => {
     // 앱 시작 시 기본 유저 목데이터 초기화
     setUser(user);
-  }, [setUser]);
+
+    // localStorage에서 판매자 모드 복원
+    initializeSellerMode();
+  }, [setUser, initializeSellerMode]);
 
   return (
     <>
@@ -57,6 +62,8 @@ function AppContent() {
           <Route path='/seller-mypage' element={<SellerMyPage />} />
           <Route path='/seller-market' element={<SellerMarketPage />} />
           <Route path='/product-detail/:id' element={<ProductDetailPage />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/order-complete' element={<OrderCompletePage />} />
         </Route>
 
         {/* 그룹 2: 폼 전용 레이아웃 */}

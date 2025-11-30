@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // --- hook ---
 import { fetchById, useCommunityPosts } from '@/hooks/useCommunityPosts';
@@ -12,13 +12,12 @@ import PostInteractionBar from '@/components/social/PostInteractionBar';
 
 export default function CommunityDetailPage() {
   const { id } = useParams();
-  // TODO: id를 사용하여 커뮤니티 글 데이터 불러오고 표현
-  const { data: post } = fetchById(id);
-  // const { getPostsDetail } = useCommunityPosts(id);
-  console.log(post?.taggedProducts);
+  const { data: post, isLoading, error } = fetchById(id);
+  console.log('📖 포스트 데이터:', post);
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
+  const navigate = useNavigate();
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -35,8 +34,44 @@ export default function CommunityDetailPage() {
     console.log('북마크 클릭');
   };
 
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className='w-full w-max-[480px]'>
+        <CommonHeader />
+        <div className='flex justify-center items-center h-screen'>
+          <p className='text-gray-500'>로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className='w-full w-max-[480px]'>
+        <CommonHeader />
+        <div className='flex justify-center items-center h-screen'>
+          <p className='text-red-500'>포스트를 불러올 수 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 데이터 없음
+  if (!post) {
+    return (
+      <div className='w-full w-max-[480px]'>
+        <CommonHeader />
+        <div className='flex justify-center items-center h-screen'>
+          <p className='text-gray-500'>포스트를 찾을 수 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className='w-full w-max-[480px] '>
+    <div className='w-full w-max-[480px]'>
       {/* 헤더  */}
       <CommonHeader />
       <main>
@@ -51,12 +86,12 @@ export default function CommunityDetailPage() {
           {post?.mediaUrls && post?.mediaUrls.length > 0 && <ImageCarousel images={post?.mediaUrls} mode='read' />}
 
           {/* 상품 연결 */}
-          {post?.taggedProducts.length > 0 && (
-            <LinkedProductList products={post?.taggedProducts} onProductClick={() => console.log('click')} />
+          {post?.items?.length > 0 && (
+            <LinkedProductList products={post?.items} onProductClick={(id) => navigate(`/product-detail/${id}`)} />
           )}
 
           {/* 내용 */}
-          <div className='px-6 py-8 w-full h-[264px] '>
+          <div className='px-5 w-full h-[264px] '>
             <p className='whitespace-pre-wrap text-gray-800 text-mb leading-relaxed'>{post?.content}</p>
           </div>
         </div>

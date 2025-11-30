@@ -15,7 +15,8 @@ const useCommunityWriteStore = create((set) => ({
   title: '',
   content: '',
   images: [],
-  taggedProducts: [],
+  taggedProducts: [], // 상품 ID 배열
+  taggedProductsData: [], // 실제 상품 데이터 배열
   // category: '공예품',
 
   setData: (data) => set((state) => ({ ...state, ...data })),
@@ -53,19 +54,57 @@ const useCommunityWriteStore = create((set) => ({
 
   toggleProductTag: (product) =>
     set((state) => {
-      const isAlreadyTagged = state.taggedProducts.some((p) => p === product.id);
-      console.log('zustand에서 태그 관련: ', product);
+      const productId = product?.id || product?.itemId || product;
+      const isAlreadyTagged = state.taggedProducts.some((p) => p.id === productId);
+
+      console.log('🏷️ 상품 태그 토글:', {
+        productId,
+        productName: product?.itemName || product?.name,
+        isAlreadyTagged,
+        currentTagsCount: state.taggedProducts.length,
+      });
+
+      let newTaggedProducts;
+      let newTaggedProductsData;
+
       if (isAlreadyTagged) {
-        return { taggedProducts: [...state.taggedProducts] };
+        // 이미 태그된 경우 제거
+        newTaggedProducts = state.taggedProducts.filter((p) => p.id !== productId);
+        newTaggedProductsData = state.taggedProductsData.filter((p) => p.id !== productId);
+        console.log('❌ 상품 태그 제거:', newTaggedProducts.length);
       } else {
-        return { taggedProducts: [...state.taggedProducts, product?.id] };
+        // 태그되지 않은 경우 추가
+        // 정규화된 상품 객체 생성
+        const normalizedProduct = {
+          ...product,
+          id: productId, // id 필드 확보
+        };
+        newTaggedProducts = [...state.taggedProducts, normalizedProduct];
+        newTaggedProductsData = [...state.taggedProductsData, normalizedProduct];
+        console.log('✅ 상품 태그 추가:', newTaggedProducts.length);
       }
+
+      return {
+        taggedProducts: newTaggedProducts,
+        taggedProductsData: newTaggedProductsData,
+      };
     }),
 
   // 폼 입력
   setTitle: (title) => set({ title }),
   setContent: (content) => set({ content }),
   setCategory: (category) => set({ category }),
+
+  // 현재 상태 조회 (디버깅용)
+  getPostData: () => {
+    const state = useCommunityWriteStore.getState();
+    return {
+      title: state.title,
+      content: state.content,
+      itemIds: state.taggedProducts, // 이 형식이 API에 전송됨
+      imagesCount: state.images.length,
+    };
+  },
 
   // 초기화
   reset: () =>
@@ -74,6 +113,7 @@ const useCommunityWriteStore = create((set) => ({
       content: '',
       images: [],
       taggedProducts: [],
+      taggedProductsData: [],
     }),
 }));
 

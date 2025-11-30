@@ -14,7 +14,7 @@ export const ProductInfo = ({ product }) => {
       <div className={styles.brand}>
         {/* 판매자 정보 */}
         <div className={styles.brand1}>
-          <img className={styles.brandChild} src={product?.userImage || userAvatarImg1} alt={product.marketName} />
+          <img className={styles.brandChild} src={userAvatarImg1 || product?.userImage} alt={product.marketName} />
           <div className={styles.div1}>{product.marketName}</div>
         </div>
       </div>

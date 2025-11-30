@@ -27,8 +27,9 @@ export const useUserInfo = () => {
 };
 
 export const useUserCheck = () => {
-  // Zustand 스토어에서 직접 유저 정보 조회
-  const { isSeller, userName, marketName, userImage, farmerName, career } = useUserStore();
+  // Zustand 스토어에서 직접 유저 정보 조회 (구독)
+  const userState = useUserStore();
+  const { isSeller, userName, marketName, userImage, farmerName, career } = userState;
 
   // Zustand 스토어의 데이터를 객체로 반환
   const user = {
@@ -40,5 +41,5 @@ export const useUserCheck = () => {
     career,
   };
 
-  return { isSeller, user };
+  return { isSeller, user, userState };
 };

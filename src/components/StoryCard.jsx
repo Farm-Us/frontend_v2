@@ -25,7 +25,7 @@ export default function StoryCard({ story }) {
         </button>
       </div>
       <div className='mt-3'>
-        <p className='font-bold text-gray-800 text-lg'>{story.title}</p>
+        <p className='font-bold text-gray-800 text-lg line-clamp-1'>{story.title || story.content}</p>
         <div className='flex items-center text-sm text-gray-500 mt-2'>
           <img src={story.user.avatar} alt={story.user.name} className='w-6 h-6 rounded-full mr-2' />
           <span>{story.user.name}</span>

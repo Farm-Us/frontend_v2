@@ -8,25 +8,55 @@ import { ProductActions } from '@/components/ProductDetail/ProductActions';
 import styles from './ProductDetailPage.module.css';
 import PaymentBottomSheet from '../components/payments/PaymentBottomSheet';
 import { useProductDetail } from '../hooks/useProduct';
+import { useCart } from '../hooks/useCart';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: product, isLoading: loading, error } = useProductDetail(id);
+  const { addToCart } = useCart();
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [actionType, setActionType] = useState(null); // 'cart' 또는 'payment'
 
   const handleBack = () => navigate(-1);
 
   const handleAddToCart = () => {
-    // 장바구니 추가 로직
-    console.log('장바구니에 추가');
+    setActionType('cart');
+    setIsSelectOpen(true);
   };
 
   const handleBuyNow = () => {
-    // 바로구매 로직
-    console.log('바로구매');
-    // TODO: 구매 옵션 모달 열기
+    setActionType('payment');
     setIsSelectOpen(true);
+  };
+
+  const handleConfirmOption = (selectedOption) => {
+    if (actionType === 'cart') {
+      // 장바구니에만 저장
+      addToCart({
+        id: product?.categoryId,
+        sellerName: product?.sellerName || '새벽들딸기농원',
+        productName: product?.productName,
+        image: product?.thumbnailImageUrl,
+        optionId: selectedOption?.id,
+        optionValue: selectedOption?.optionValue,
+        price: selectedOption?.optionPrice,
+        quantity: 1,
+      });
+    } else if (actionType === 'payment') {
+      // 장바구니에 저장 후 결제 페이지로 이동
+      addToCart({
+        id: product?.categoryId,
+        sellerName: product?.sellerName || '새벽들딸기농원',
+        productName: product?.productName,
+        image: product?.thumbnailImageUrl,
+        optionId: selectedOption?.id,
+        optionValue: selectedOption?.optionValue,
+        price: selectedOption?.optionPrice,
+        quantity: 1,
+      });
+      navigate('/cart');
+    }
   };
 
   const handleToggleWishlist = () => {
@@ -53,7 +83,15 @@ export default function ProductDetailPage() {
       </div>
 
       <ProductDetailContent details={product?.details} />
-      {isSelectOpen && <PaymentBottomSheet setIsSelectOpen={setIsSelectOpen} />}
+      {isSelectOpen && (
+        <PaymentBottomSheet
+          options={product?.options}
+          setIsSelectOpen={setIsSelectOpen}
+          buttonLabel={actionType === 'cart' ? '담기' : '결제하기'}
+          productId={product?.id}
+          onConfirm={handleConfirmOption}
+        />
+      )}
       <ProductActions onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onToggleWishlist={handleToggleWishlist} />
     </div>
   );

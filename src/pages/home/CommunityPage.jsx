@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 // --- components ---
 import CommunityPost from '../../components/community/CommunityPost';
+import CommunityPostSkeleton from '../../components/community/CommunityPostSkeleton';
 import WriteButton from '@/components/button/WriteButton';
 
 // --- 임시 목 데이터 ---
@@ -15,7 +16,7 @@ import { useCommunityPosts } from '../../hooks/useCommunityPosts';
 
 export default function CommunityPage() {
   // 카테고리 내용 호출
-  const { fetchedPosts: filteredPosts } = useCommunityPosts({ pageParam: 0 });
+  const { fetchedPosts: filteredPosts, loading } = useCommunityPosts({ pageParam: 0 });
   console.log(filteredPosts);
   // TODO: 물품 호출(필요시)
 
@@ -29,7 +30,10 @@ export default function CommunityPage() {
     <div className='relative '>
       {/* 게시물 목록 */}
       <div className='flex flex-col w-full items-start bg-white'>
-        {filteredPosts ? (
+        {loading ? (
+          // 로딩 중 스켈레톤 표시
+          Array.from({ length: 3 }).map((_, index) => <CommunityPostSkeleton key={index} />)
+        ) : filteredPosts && filteredPosts.length > 0 ? (
           filteredPosts?.map((post) => (
             <CommunityPost
               key={post?.postId}

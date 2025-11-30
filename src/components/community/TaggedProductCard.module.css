@@ -1,0 +1,107 @@
+/* TaggedProductCard.module.css */
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #f0f1f3;
+  border-radius: 4px;
+  width: 100%;
+  position: relative;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: #d9d9d9;
+  border-radius: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 179px;
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.nameWrapper {
+  width: 100%;
+}
+
+.productName {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 18px;
+  letter-spacing: -0.24px;
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.priceWrapper {
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.productPrice {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 20px;
+  letter-spacing: -0.28px;
+  color: #3b4149;
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+}
+
+.removeButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  padding: 0;
+}
+
+.removeButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 반응형 */
+@media (max-width: 640px) {
+  .info {
+    width: 160px;
+  }
+}
