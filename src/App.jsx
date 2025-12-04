@@ -40,15 +40,17 @@ import { user, seller } from './data';
 import { useUserStore } from './store/userStore';
 
 function AppContent() {
-  const { setUser, initializeSellerMode } = useUserStore();
+  const { setUser, setSeller, isSeller } = useUserStore();
 
   useEffect(() => {
-    // 앱 시작 시 기본 유저 목데이터 초기화
-    setUser(user);
-
-    // localStorage에서 판매자 모드 복원
-    initializeSellerMode();
-  }, [setUser, initializeSellerMode]);
+    // isSeller 상태에 따라 적절한 유저 데이터만 로드
+    // (initializeSellerMode는 store 생성 시 자동 실행되도록 수정 필요)
+    if (isSeller) {
+      setSeller(seller);
+    } else {
+      setUser(user);
+    }
+  }, []);
 
   return (
     <>

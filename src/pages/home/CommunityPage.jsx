@@ -21,6 +21,7 @@ export default function CommunityPage() {
 
   const [activeTooltipId, setActiveTooltipId] = useState(null);
   const { isSeller } = useUserCheck();
+  console.log('isSeller:', isSeller);
 
   // 게시물
   return (
