@@ -28,14 +28,8 @@ export const useCart = () => {
   }, [cartItems, isLoading]);
 
   const addToCart = (item) => {
-    const existingItem = cartItems.find((i) => i.id === item.id);
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i))
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, quantity: item.quantity || 1 }]);
-    }
+    // 새로운 상품은 항상 추가 (수량 증가 없음)
+    setCartItems([...cartItems, { ...item, quantity: item.quantity || 1 }]);
   };
 
   const removeFromCart = (itemId) => {
