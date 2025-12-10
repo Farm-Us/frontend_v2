@@ -8,11 +8,11 @@ import LinkedProductList from './LinkedProductList';
 import { useNavigate } from 'react-router-dom';
 import { seller } from '../../data';
 
-export default function CommunityPost({ post, activeTooltipId, setActiveTooltipId }) {
+export default function CommunityPost({ post }) {
   // 게시글 작성자 정보 검색하는 API가 없어서 그냥 목데이터 호출
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const handleLike = () => {
     setIsLiked(!isLiked);
     setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
@@ -32,7 +32,7 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
   const onProductClick = (id) => {
     // 상품 디테일로 이동
     console.log('클릭한 상품', id);
-    navigation(`/product-detail/${id}`);
+    navigate(`/product-detail/${id}`);
   };
 
   return (
@@ -42,7 +42,7 @@ export default function CommunityPost({ post, activeTooltipId, setActiveTooltipI
 
       <div onClick={() => navigation(`/community/${post?.postId}`)} className='hover:cursor-pointer'>
         <p className='px-4 mb-3 text-[16px] font-semibold'>{post?.title}</p>
-        <PostContent content={post?.title} />
+        <PostContent content={post?.content} />
       </div>
 
       {/* 이미지 추가 */}

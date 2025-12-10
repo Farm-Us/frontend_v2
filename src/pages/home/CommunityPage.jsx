@@ -17,9 +17,9 @@ import { useCommunityPosts } from '../../hooks/useCommunityPosts';
 export default function CommunityPage() {
   // 카테고리 내용 호출
   const { fetchedPosts: filteredPosts, loading } = useCommunityPosts({ pageParam: 0 });
-  // TODO: 물품 호출(필요시)
+  // TODO: 댓글 기능 추가 시, 댓글, 좋아요 등 상태를 전역으로 관리 필요
+  
 
-  const [activeTooltipId, setActiveTooltipId] = useState(null);
   const { isSeller } = useUserCheck();
   console.log('isSeller:', isSeller);
 
@@ -36,8 +36,6 @@ export default function CommunityPage() {
             <CommunityPost
               key={post?.postId}
               post={post}
-              activeTooltipId={activeTooltipId}
-              setActiveTooltipId={setActiveTooltipId}
             />
           ))
         ) : (
@@ -47,6 +45,7 @@ export default function CommunityPage() {
 
       {/* 플로트 버튼 */}
       {isSeller && <WriteButton />}
+      
     </div>
   );
 }

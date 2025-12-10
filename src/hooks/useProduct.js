@@ -1,9 +1,7 @@
 // hooks/useProduct.js
 import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { itemApi } from '../services/itemApi';
-import { farmerStoriesProd } from '../data';
 // 임시로 넣은 파일
 import userAvatarImg1 from '@/assets/images/user-profile-1.png';
 
