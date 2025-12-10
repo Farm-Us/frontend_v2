@@ -36,6 +36,7 @@ export default function CommunityPage() {
             <CommunityPost
               key={post?.postId}
               post={post}
+              mode='view'
             />
           ))
         ) : (

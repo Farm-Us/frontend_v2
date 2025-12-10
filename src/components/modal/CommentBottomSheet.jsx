@@ -1,15 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './CommentBottomSheet.module.css';
 
+// TODO: 댓글 API 연동 필요
+// TODO: 댓글 디자인 피그마와 동일한지 확인 필요
 const CommentBottomSheet = ({ isOpen, onClose, postId, comments = [], onAddComment }) => {
   const [commentText, setCommentText] = useState('');
-  const [localComments, setLocalComments] = useState(comments);
+  const [localComments, setLocalComments] = useState([]);
   const textareaRef = useRef(null);
   const bottomSheetRef = useRef(null);
 
+  // isOpen될 때만 comments를 초기화
   useEffect(() => {
-    setLocalComments(comments);
-  }, [comments]);
+    if (isOpen) {
+      setLocalComments(comments);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && textareaRef.current) {
