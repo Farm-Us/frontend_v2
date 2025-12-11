@@ -36,7 +36,7 @@ export default function SellerMarketPage() {
       </div>
 
       {/* --- 프로필 정보 --- */}
-      <div className={`${styles.profileSection}`}>
+      <div className={`${styles.profileSection} px-[24px] pb-[24px] pt-[68px]`}>
         <img className={styles.profileImage} src={profile.profileImage} alt='프로필 이미지' />
         <div className={styles.marketName}>{profile.marketName}</div>
         <div className={styles.marketIntro}>딸기에 진심인 {profile.marketName}입니다.</div>

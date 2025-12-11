@@ -119,10 +119,32 @@ export const useProductRegistrationForm = () => {
     if (currentStep !== 'detail') return;
 
     if (JSON.stringify(watchedOptions) !== JSON.stringify(options)) {
+      // 스토어의 옵션 배열 크기를 폼과 맞춤
+      const currentOptionsLength = options.length;
+      const watchedOptionsLength = watchedOptions.length;
+      
+      // 옵션이 추가된 경우
+      if (watchedOptionsLength > currentOptionsLength) {
+        const diff = watchedOptionsLength - currentOptionsLength;
+        for (let i = 0; i < diff; i++) {
+          addOption();
+        }
+      }
+      // 옵션이 제거된 경우
+      else if (watchedOptionsLength < currentOptionsLength) {
+        const diff = currentOptionsLength - watchedOptionsLength;
+        for (let i = 0; i < diff; i++) {
+          removeOption(currentOptionsLength - 1 - i);
+        }
+      }
+      
+      // 모든 옵션 값 업데이트
       watchedOptions.forEach((option, index) => {
-        updateOption(index, 'name', option.name);
-        updateOption(index, 'value', option.value);
-        updateOption(index, 'price', option.price);
+        if (options[index]) {
+          updateOption(index, 'name', option.name);
+          updateOption(index, 'value', option.value);
+          updateOption(index, 'price', option.price);
+        }
       });
     }
 
@@ -147,10 +169,10 @@ export const useProductRegistrationForm = () => {
       ...data,
       id: Date.now(),
     };
-    console.log('data:', newProduct);
-    console.log('newProduct');
+    // console.log('data:', newProduct);
+    // console.log('newProduct');
     const dataParsed = dataLogics(1, newProduct);
-    console.log(dataParsed);
+    // console.log(dataParsed);
     const saveItem = saveItemMutation.mutateAsync(dataParsed);
     await toast.promise(saveItem, {
       loading: '저장하는 중...',
