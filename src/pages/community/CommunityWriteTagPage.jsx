@@ -89,10 +89,11 @@ export default function CommunityWriteTagPage() {
               <ProductCardRevers
                 key={normalizedProduct.id}
                 itemName={product.itemName || product.name}
-                itemPrice={product.itemPrice || product.price}
+                discount={product.discountRate}
+                itemPrice={product?.discountedPrice}
                 rating={product?.rating}
                 reviews={product?.reviews || 0}
-                image={product?.mainImage || product?.image || product?.thumbnailImageUrl}
+                image={product?.thumbnailImageUrl}
                 isSelected={taggedProducts?.some((p) => p.id === normalizedProduct.id)}
                 onSelect={() => handleToggleProduct(normalizedProduct)}
               />

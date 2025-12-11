@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 export const ProductInfo = ({ product, isPreview = false }) => {
   const firstOptionPrice = product?.discountedPrice || product.options?.[0]?.optionPrice;
   const discountedPrice = calculateDiscountedPrice(firstOptionPrice, product?.discount);
+  console.log('ProductInfo 렌더링:', product);
   const navigate = useNavigate();
   return (
     <div className={styles.info}>
@@ -41,10 +42,10 @@ export const ProductInfo = ({ product, isPreview = false }) => {
           <div className={styles.div2}>(0)</div>
         </div>
         <div className={styles.price}>
-          {product.discount > 0 && <b className={styles.b}>{product.discount || product?.discoundRate}%</b>}
-          <b className={styles.b1}>{formatPrice(discountedPrice) || 0}원</b>
+          {product.discountRate > 0 && <b className={styles.b}>{product.discountRate}%</b>}
+          <b className={styles.b1}>{formatPrice(product.discountedPrice) || 0}원</b>
         </div>
-        {product.discount > 0 && <div className={styles.div4}>{formatPrice(firstOptionPrice)}원</div>}
+        {product.discountRate > 0 && <div className={styles.div4}>{formatPrice(product.originalPrice)}원</div>}
       </div>
 
       <ProductDetailList product={product} />

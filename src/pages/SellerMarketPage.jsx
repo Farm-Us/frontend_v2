@@ -65,14 +65,14 @@ export default function SellerMarketPage() {
                 {/* <b className={styles.kg}>{product.productName}</b> */}
                 <b className={`${styles.kg}`}>{product.productName || product.itemName}</b>
                 <div className={styles.price}>
-                  {product.discount >= '0' && <div className={styles.div10}>{product.discount}%</div>}
+                  {product.discountRate > '0' && <div className={styles.div10}>{product.discountRate}%</div>}
                   <div className={styles.div7}>
                     {/* {product.options?.[0]?.price
                       ? `${new Intl.NumberFormat('ko-KR').format(
                           product.options[0].price * (1 - (product.discount || 0) / 100)
                         )}원`
                       : ''} */}
-                    {product?.discountedPrice}
+                    {Number(product?.discountedPrice).toLocaleString()}원
                   </div>
                 </div>
               </div>

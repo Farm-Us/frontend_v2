@@ -58,6 +58,8 @@ export const useProductDetail = (productId) => {
           categoryName: data?.categoryName,
           description: data?.description,
           discountedPrice: data?.discountedPrice,
+          originalPrice: data?.originalPrice,
+          discountRate: data?.discountRate,
           farmingDetails: data?.farmingDetails,
           productName: data?.itemName,
           itemId: data?.itemId,
