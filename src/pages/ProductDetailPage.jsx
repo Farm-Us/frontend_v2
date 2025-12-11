@@ -83,7 +83,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* 상세, 후기 탭 */}
-      <div className={styles.tabContainer}>
+      <div className={`${styles.tabContainer}`}>
         <button
           className={`${styles.tabButton} ${activeTab === 'detail' ? styles.tabActive : ''}`}
           onClick={() => setActiveTab('detail')}>
