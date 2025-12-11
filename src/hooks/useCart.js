@@ -28,8 +28,21 @@ export const useCart = () => {
   }, [cartItems, isLoading]);
 
   const addToCart = (item) => {
-    // 새로운 상품은 항상 추가 (수량 증가 없음)
-    setCartItems([...cartItems, { ...item, quantity: item.quantity || 1 }]);
+    // 같은 optionId를 가진 항목이 있는지 확인
+    const existingItemIndex = cartItems.findIndex((i) => i.optionId === item.optionId);
+    
+    if (existingItemIndex !== -1) {
+      // 같은 optionId가 있으면 수량 증가
+      const updatedItems = [...cartItems];
+      updatedItems[existingItemIndex] = {
+        ...updatedItems[existingItemIndex],
+        quantity: updatedItems[existingItemIndex].quantity + (item.quantity || 1)
+      };
+      setCartItems(updatedItems);
+    } else {
+      // 없으면 새로운 항목 추가
+      setCartItems([...cartItems, { ...item, quantity: item.quantity || 1 }]);
+    }
   };
 
   const removeFromCart = (itemId) => {

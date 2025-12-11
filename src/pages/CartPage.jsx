@@ -49,7 +49,7 @@ export default function CartPage() {
 
   const handleQuantityChange = (id, delta) => {
     setCartItems(
-      cartItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
+      cartItems.map((item) => (item.optionId === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
     );
   };
 
@@ -113,7 +113,7 @@ export default function CartPage() {
 
             <div className={styles.itemsContainer}>
               {group.items.map((item) => (
-                <div key={item.id} className={styles.cartItem}>
+                <div key={item.optionId} className={styles.cartItem}>
                   <input
                     type='checkbox'
                     checked={item.isSelected}
@@ -133,11 +133,11 @@ export default function CartPage() {
 
                     <div className={styles.cardBottom}>
                       <div className={styles.quantityControl}>
-                        <button className={styles.quantityButton} onClick={() => handleQuantityChange(item.id, -1)}>
+                        <button className={styles.quantityButton} onClick={() => handleQuantityChange(item.optionId, -1)}>
                           −
                         </button>
                         <input type='text' className={styles.quantityInput} value={item.quantity} readOnly />
-                        <button className={styles.quantityButton} onClick={() => handleQuantityChange(item.id, 1)}>
+                        <button className={styles.quantityButton} onClick={() => handleQuantityChange(item.optionId, 1)}>
                           +
                         </button>
                       </div>
