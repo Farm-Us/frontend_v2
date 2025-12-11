@@ -42,10 +42,10 @@ export const ProductInfo = ({ product, isPreview = false }) => {
           <div className={styles.div2}>(0)</div>
         </div>
         <div className={styles.price}>
-          {product.discountRate > 0 && <b className={styles.b}>{product.discountRate}%</b>}
-          <b className={styles.b1}>{formatPrice(product.discountedPrice) || 0}원</b>
+          {product.discountRate > 0 || product.discount > 0 && <b className={styles.b}>{product.discountRate || product.discount}%</b>}
+          <b className={styles.b1}>{formatPrice(product.discountedPrice) || discountedPrice.toLocaleString()}원</b>
         </div>
-        {product.discountRate > 0 && <div className={styles.div4}>{formatPrice(product.originalPrice)}원</div>}
+        {product.discountRate > 0 || product.discount > 0 && <div className={styles.div4}>{formatPrice(product.originalPrice || product.itemPrice)}원</div>}
       </div>
 
       <ProductDetailList product={product} />
