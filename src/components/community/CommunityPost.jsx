@@ -46,7 +46,7 @@ export default function CommunityPost({ post, mode='view' }) {
       <PostHeader user={seller} />
 
       <div onClick={() => navigate(`/community/${post?.postId}`)} className='hover:cursor-pointer'>
-        <p className='px-4 mb-3 text-[16px] font-semibold'>{post?.title}</p>
+        <p className='px-4 pb-3 text-[16px] font-semibold'>{post?.title}</p>
         <PostContent content={post?.content} />
       </div>
 

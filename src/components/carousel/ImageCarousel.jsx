@@ -30,7 +30,7 @@ export default function ImageCarousel({
   };
 
   return (
-    <div className='relative w-full h-[335px] bg-gray-100 flex justify-center rounded overflow-hidden'>
+    <div className='relative w-full h-full bg-gray-100 flex justify-center rounded overflow-hidden'>
       {images.length > 0 ? (
         <>
           <Swiper
