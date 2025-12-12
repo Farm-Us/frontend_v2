@@ -136,6 +136,24 @@
   line-height: 1.5;
 }
 
+.loadingMessage {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6a7685;
+  line-height: 1.5;
+}
+
+.loadingMore {
+  padding: 20px;
+  text-align: center;
+  color: #6a7685;
+  font-size: 14px;
+}
+
+.observerTarget {
+  height: 20px;
+}
+
 .floatingButton {
   position: fixed;
   bottom: 30px;

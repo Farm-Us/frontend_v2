@@ -6,11 +6,11 @@ import { itemApi } from '../services/itemApi';
 import userAvatarImg1 from '@/assets/images/user-profile-1.png';
 
 // 상품 호출 전체
-export const useProduct = (prodcerId) => {
+export const useProduct = (prodcerId, params) => {
   const navigate = useNavigate();
   return useQuery({
     queryKey: ['product', prodcerId],
-    queryFn: async () => itemApi.getItemsProducer(prodcerId),
+    queryFn: async () => itemApi.getItemsProducer(prodcerId, params),
     select: (data) => data.content,
     enabled: !!prodcerId, // prodcerId 존재할 때만 실행
     retry: 1, // 에러 시 1번만 재시도

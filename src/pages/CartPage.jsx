@@ -38,7 +38,7 @@ export default function CartPage() {
   };
 
   const handleSelectItem = (id) => {
-    const updatedItems = cartItems.map((item) => (item.id === id ? { ...item, isSelected: !item.isSelected } : item));
+    const updatedItems = cartItems.map((item) => (item.optionId === id ? { ...item, isSelected: !item.isSelected } : item));
     setCartItems(updatedItems);
     setSelectAll(updatedItems.every((item) => item.isSelected));
   };
@@ -83,27 +83,39 @@ export default function CartPage() {
         <div className={styles.spacer} />
       </header>
 
-      {/* 전체 선택 영역 */}
-      <div className={styles.selectAllSection}>
-        <div className={styles.selectAllLeft}>
-          <input
-            type='checkbox'
-            checked={selectAll}
-            onChange={handleSelectAll}
-            className={styles.checkbox}
-            id='selectAll'
-          />
-          <label htmlFor='selectAll' className={styles.selectAllLabel}>
-            전체 선택
-          </label>
+      {cartItems.length === 0 ? (
+        /* 빈 장바구니 */
+        <div className={styles.emptyCart}>
+          <div className={styles.emptyContent}>
+            <p className={styles.emptyMessage}>장바구니가 비어있습니다</p>
+            <button className={styles.homeButton} onClick={() => navigate('/')}>
+              홈으로 돌아가기
+            </button>
+          </div>
         </div>
-        <button className={styles.deleteButton} onClick={handleDeleteSelected}>
-          선택 삭제
-        </button>
-      </div>
+      ) : (
+        <>
+          {/* 전체 선택 영역 */}
+          <div className={styles.selectAllSection}>
+            <div className={styles.selectAllLeft}>
+              <input
+                type='checkbox'
+                checked={selectAll}
+                onChange={handleSelectAll}
+                className={styles.checkbox}
+                id='selectAll'
+              />
+              <label htmlFor='selectAll' className={styles.selectAllLabel}>
+                전체 선택
+              </label>
+            </div>
+            <button className={styles.deleteButton} onClick={handleDeleteSelected}>
+              선택 삭제
+            </button>
+          </div>
 
-      {/* 상품 목록 */}
-      <div className={styles.cartContent}>
+          {/* 상품 목록 */}
+          <div className={styles.cartContent}>
         {groupedItems.map((group, groupIndex) => (
           <div key={groupIndex} className={styles.sellerGroup}>
             <div className={styles.divider} />
@@ -117,9 +129,9 @@ export default function CartPage() {
                   <input
                     type='checkbox'
                     checked={item.isSelected}
-                    onChange={() => handleSelectItem(item.id)}
+                    onChange={() => handleSelectItem(item.optionId)}
                     className={styles.checkbox}
-                    id={`item-${item.id}`}
+                    id={`item-${item.optionId}`}
                   />
 
                   <div className={styles.itemContent}>
@@ -149,10 +161,10 @@ export default function CartPage() {
             </div>
           </div>
         ))}
-      </div>
+          </div>
 
-      {/* 바텀시트 - 결제 요약 */}
-      <div className={styles.bottomSheet}>
+          {/* 바텀시트 - 결제 요약 */}
+          <div className={styles.bottomSheet}>
         <div className={styles.handle} />
 
         <div className={styles.priceSection}>
@@ -184,7 +196,9 @@ export default function CartPage() {
             <span> {totalPrice.toLocaleString()}원 결제하기</span>
           </button>
         </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

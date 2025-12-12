@@ -1,6 +1,6 @@
 // src/components/Header.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/icons/logo.svg?react';
 import ShoppingCartIcon from '@/assets/icons/shopping-cart.svg?react';
 import UserIcon from '@/assets/icons/user.svg?react';
@@ -10,6 +10,11 @@ import { useUserCheck } from '../../hooks/useUserInfo';
 
 export default function Header() {
   const { isSeller } = useUserCheck();
+  const navigate = useNavigate();
+  function onCartClick() {
+    // 장바구니 클릭 시 동작할 코드 작성
+    navigate('/cart');
+  }
 
   return (
     <header className='bg-white px-4 py-3 flex justify-between items-center '>
@@ -24,7 +29,7 @@ export default function Header() {
           <SearchIcon />
         </button>
         {/* 장바구니 버튼은 아직 기능이 없으므로 button 태그 유지 */}
-        <button aria-label='장바구니 보기'>
+        <button aria-label='장바구니 보기' onClick={onCartClick}>
           <ShoppingCartIcon className='w-6 h-6 text-gray-800 hover:text-green-600' />
         </button>
         {/* 사용자 아이콘 클릭 시 마이페이지로 이동하도록 Link로 변경 */}

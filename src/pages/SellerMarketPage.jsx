@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import styles from './SellerMarketPage.module.css';
 import DefaultImage from '@/assets/images/UserProfile.jpg';
-import { useProduct } from '../hooks/useProduct';
+import { itemApi } from '../services/itemApi';
 
 // 아이콘 컴포넌트
 const ChevronLeftIcon = () => (
@@ -18,11 +19,61 @@ const PlusIcon = () => (
 
 export default function SellerMarketPage() {
   const navigate = useNavigate();
-  const { data: products } = useProduct(1);
   const [profile, setProfile] = useState({
     marketName: '내 마켓', // 기본값
     profileImage: DefaultImage, // 기본값
   });
+
+  // 무한 스크롤을 위한 Intersection Observer
+  const observerTarget = useRef(null);
+
+  // 무한 쿼리
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ['sellerProducts', 1],
+    queryFn: ({ pageParam = 0 }) => itemApi.getItemsProducer(1, { page: pageParam, size: 10 }),
+    getNextPageParam: (lastPage, allPages) => {
+      // 마지막 페이지가 비어있지 않고, 더 가져올 데이터가 있으면 다음 페이지 번호 반환
+      if (lastPage.content && lastPage.content.length > 0 && !lastPage.last) {
+        return allPages.length;
+      }
+      return undefined;
+    },
+    enabled: true,
+  });
+
+  // Intersection Observer 콜백
+  const handleObserver = useCallback(
+    (entries) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  );
+
+  // Intersection Observer 설정
+  useEffect(() => {
+    const element = observerTarget.current;
+    const option = { threshold: 0.5 };
+    const observer = new IntersectionObserver(handleObserver, option);
+    
+    if (element) observer.observe(element);
+    
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, [handleObserver]);
+
+  // 모든 페이지의 상품을 하나의 배열로 합치기
+  const products = data?.pages.flatMap((page) => page.content) || [];
 
   return (
     <div className={styles.div}>
@@ -36,7 +87,7 @@ export default function SellerMarketPage() {
       </div>
 
       {/* --- 프로필 정보 --- */}
-      <div className={`${styles.profileSection} px-[24px] pb-[24px] pt-[68px]`}>
+      <div className={`${styles.profileSection} px-[24px] pb-[24px] pt-[24px]`}>
         <img className={styles.profileImage} src={profile.profileImage} alt='프로필 이미지' />
         <div className={styles.marketName}>{profile.marketName}</div>
         <div className={styles.marketIntro}>딸기에 진심인 {profile.marketName}입니다.</div>
@@ -51,33 +102,34 @@ export default function SellerMarketPage() {
 
       {/* --- 상품 목록 --- */}
       <div className={styles.productList}>
-        {products?.length > 0 ? (
-          products.map((product) => (
-            // 각 상품 카드를 클릭하면 상세 페이지로 이동합니다.
-            <Link key={product.itemId} to={`/product-detail/${product.itemId}`} className={styles.card}>
-              <img
-                className={styles.imgIcon1}
-                // src={product.mainImage || 'https://placehold.co/92x92'}
-                src={product.thumbnailImageUrl || 'https://placehold.co/92x92'}
-                alt={product.productName || product.itemName}
-              />
-              <div className={styles.info}>
-                {/* <b className={styles.kg}>{product.productName}</b> */}
-                <b className={`${styles.kg}`}>{product.productName || product.itemName}</b>
-                <div className={styles.price}>
-                  {product.discountRate > '0' && <div className={styles.div10}>{product.discountRate}%</div>}
-                  <div className={styles.div7}>
-                    {/* {product.options?.[0]?.price
-                      ? `${new Intl.NumberFormat('ko-KR').format(
-                          product.options[0].price * (1 - (product.discount || 0) / 100)
-                        )}원`
-                      : ''} */}
-                    {Number(product?.discountedPrice).toLocaleString()}원
+        {isLoading ? (
+          <div className={styles.loadingMessage}>로딩 중...</div>
+        ) : isError ? (
+          <div className={styles.emptyMessage}>상품을 불러오는데 실패했습니다.</div>
+        ) : products.length > 0 ? (
+          <>
+            {products.map((product) => (
+              <Link key={product.itemId} to={`/product-detail/${product.itemId}`} className={styles.card}>
+                <img
+                  className={styles.imgIcon1}
+                  src={product.thumbnailImageUrl || 'https://placehold.co/92x92'}
+                  alt={product.productName || product.itemName}
+                />
+                <div className={styles.info}>
+                  <b className={`${styles.kg}`}>{product.productName || product.itemName}</b>
+                  <div className={styles.price}>
+                    {product.discountRate > '0' && <div className={styles.div10}>{product.discountRate}%</div>}
+                    <div className={styles.div7}>{Number(product?.discountedPrice).toLocaleString()}원</div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))
+              </Link>
+            ))}
+            
+            {/* 무한 스크롤 트리거 */}
+            <div ref={observerTarget} className={styles.observerTarget}>
+              {isFetchingNextPage && <div className={styles.loadingMore}>더 불러오는 중...</div>}
+            </div>
+          </>
         ) : (
           <div className={styles.emptyMessage}>
             등록된 상품이 없습니다. <br /> '+' 버튼을 눌러 상품을 추가해보세요.
