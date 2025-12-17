@@ -17,6 +17,7 @@ export default function ProductDetailPage() {
   const { addToCart } = useCart();
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [actionType, setActionType] = useState(null); // 'cart' 또는 'payment'
+  const [activeTab, setActiveTab] = useState('detail'); // 'detail' 또는 'review'
 
   const handleBack = () => navigate(-1);
 
@@ -80,6 +81,22 @@ export default function ProductDetailPage() {
       <div className={styles.infoAndTab}>
         <ProductInfo product={product} />
       </div>
+
+      {/* 상세, 후기 탭 */}
+      <div className={`${styles.tabContainer}`}>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'detail' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('detail')}>
+          상세
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'review' ? styles.tabActive : ''}`}
+          // onClick={() =>  setActiveTab('review')}>
+          >
+          후기 <span className='text-[#6A7685] text-xs font-medium leading-4'>0</span>
+        </button>
+      </div>
+
 
       <ProductDetailContent details={product?.details} />
       {isSelectOpen && (

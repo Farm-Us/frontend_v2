@@ -30,15 +30,18 @@
 }
 .div26 {
   font-size: 18px;
-  font-weight: 600;
   color: #3b4149;
   text-align: center;
   flex-grow: 1;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px; /* 144.444% */
+  letter-spacing: -0.36px; 
 }
 .imgIcon {
   width: 100%;
   height: 375px;
-  padding-top: 54px; /* 헤더 높이만큼 패딩 추가 */
+  /* padding-top: 54px; 헤더 높이만큼 패딩 추가 */
   /* object-fit: cover; */
   object-fit: fill;
 }
@@ -165,7 +168,8 @@
 .contents {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  padding-top: 48px;
 }
 .contentsChild {
   width: 100%;
@@ -242,4 +246,51 @@
   .button1 {
     width: 7rem;
   }
+}
+
+/* 탭 컨테이너 */
+.tabContainer {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #fff;
+  position: sticky;
+  top: 54px;
+  margin-bottom: 12px;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 16px 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: none;
+  color: #3B3B3B;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  font-style: normal;
+  line-height: 22px; /* 137.5% */
+  letter-spacing: -0.32px;
+}
+/* 
+.tabButton:hover {
+  color: #1a1a1a;
+} */
+
+.tabActive {
+  font-weight: 600;
+
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border: 2px solid #3B4149;
 }

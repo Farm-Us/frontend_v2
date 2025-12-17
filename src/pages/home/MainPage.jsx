@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom';
 // 컴포넌트 임포트
 import CategoryChips from '@/components/chips/CategoryChips.jsx';
 import MainBanner from '@/components/banner/MainBanner.jsx';
-// 이미지 임포트
-import mainBannerImg from '@/assets/images/homecommerce.png';
-import userAvatarImg from '@/assets/images/user-profile.png';
 // 더미 데이터 임포트
+import { mainBannerImage, userAvatarImg } from '../../data.js';
 import { interestProducts, seasonalProducts, farmerStories } from '@/data.js';
 // 섹션 컴포넌트 임포트
 import ProductRecommendationSection from './commerce/ProductRecommendationSection';
@@ -36,7 +34,7 @@ export default function MainPage() {
     <div className='relative'>
       <main className='px-4 py-6 space-y-10 bg-white'>
         <CategoryChips categories={categories} activeChip={activeChip} setActiveChip={setActiveChip} />
-        <MainBanner mainBannerImg={mainBannerImg} userAvatarImg={userAvatarImg} />
+        <MainBanner mainBannerImg={mainBannerImage} userAvatarImg={userAvatarImg} />
 
         {/* 사용자의 관심있는 상품 영역 */}
         <ProductRecommendationSection

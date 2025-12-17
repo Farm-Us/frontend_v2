@@ -88,7 +88,7 @@ export const useProductRegistrationForm = () => {
   const watchedOptions = useWatch({ control, name: 'options' });
   const watchedDiscount = useWatch({ control, name: 'discount' });
 
-  // 스토어 데이터와 폼 동기화
+  // 스토어 데이터와 폼 동기화 (초기 로드 시에만)
   useEffect(() => {
     // 기본 정보 동기화
     setValue('category', category || '');
@@ -97,9 +97,12 @@ export const useProductRegistrationForm = () => {
 
     // 상세 정보 동기화
     setValue('details', details || []);
-    setValue('options', options.length > 0 ? options : [{ name: '', value: '', price: '' }]);
+    // options는 초기 로드 시에만 동기화 (이후에는 폼이 단일 진실 공급원)
+    if (optionFields.length === 0) {
+      setValue('options', options.length > 0 ? options : [{ name: '', value: '', price: '' }]);
+    }
     setValue('discount', discount || 0);
-  }, [category, itemName, mainImage, details, options, discount, setValue]);
+  }, [category, itemName, mainImage, details, discount, setValue]);
 
   // 기본 정보만 watch
   useEffect(() => {
@@ -116,10 +119,32 @@ export const useProductRegistrationForm = () => {
     if (currentStep !== 'detail') return;
 
     if (JSON.stringify(watchedOptions) !== JSON.stringify(options)) {
+      // 스토어의 옵션 배열 크기를 폼과 맞춤
+      const currentOptionsLength = options.length;
+      const watchedOptionsLength = watchedOptions.length;
+      
+      // 옵션이 추가된 경우
+      if (watchedOptionsLength > currentOptionsLength) {
+        const diff = watchedOptionsLength - currentOptionsLength;
+        for (let i = 0; i < diff; i++) {
+          addOption();
+        }
+      }
+      // 옵션이 제거된 경우
+      else if (watchedOptionsLength < currentOptionsLength) {
+        const diff = currentOptionsLength - watchedOptionsLength;
+        for (let i = 0; i < diff; i++) {
+          removeOption(currentOptionsLength - 1 - i);
+        }
+      }
+      
+      // 모든 옵션 값 업데이트
       watchedOptions.forEach((option, index) => {
-        updateOption(index, 'name', option.name);
-        updateOption(index, 'value', option.value);
-        updateOption(index, 'price', option.price);
+        if (options[index]) {
+          updateOption(index, 'name', option.name);
+          updateOption(index, 'value', option.value);
+          updateOption(index, 'price', option.price);
+        }
       });
     }
 
@@ -144,10 +169,10 @@ export const useProductRegistrationForm = () => {
       ...data,
       id: Date.now(),
     };
-    console.log('data:', newProduct);
-    console.log('newProduct');
+    // console.log('data:', newProduct);
+    // console.log('newProduct');
     const dataParsed = dataLogics(1, newProduct);
-    console.log(dataParsed);
+    // console.log(dataParsed);
     const saveItem = saveItemMutation.mutateAsync(dataParsed);
     await toast.promise(saveItem, {
       loading: '저장하는 중...',
@@ -180,14 +205,14 @@ export const useProductRegistrationForm = () => {
 
   // === 상세 정보 관련 핸들러 (2단계) ===
   const handleAddOption = () => {
+    // 폼에만 추가 (스토어는 watchedOptions useEffect에서 자동 동기화)
     appendOption({ name: '', value: '', price: '' });
-    addOption();
   };
 
   const handleRemoveOption = (index) => {
     if (optionFields.length > 1) {
+      // 폼에서만 제거 (스토어는 watchedOptions useEffect에서 자동 동기화)
       removeOptionField(index);
-      removeOption(index);
     }
   };
 

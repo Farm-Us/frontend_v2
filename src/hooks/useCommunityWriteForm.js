@@ -112,7 +112,7 @@ const useCreateCommunityPost = (producerId) => {
     mutationFn: (postData) => postApi.createPost(producerId, postData),
     onSuccess: (resp) => {
       // React Query 캐시 업데이트
-      queryClient.setQueryData(['community'], (oldData) => {
+      queryClient.setQueryData(['communityPosts'], (oldData) => {
         if (oldData?.content) {
           return {
             ...oldData,
@@ -123,7 +123,7 @@ const useCreateCommunityPost = (producerId) => {
       });
 
       // 커뮤니티 목록 캐시 무효화 (다음 조회 시 새로 가져옴)
-      queryClient.invalidateQueries({ queryKey: ['community'] });
+      queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
     },
     onError: (error) => {
       console.error('커뮤니티 포스트 생성 에러:', error);

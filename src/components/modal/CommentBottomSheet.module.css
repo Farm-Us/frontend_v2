@@ -1,0 +1,294 @@
+/* 배경 오버레이 */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 바텀 시트 */
+.bottomSheet {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 20px 20px 0 0;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 헤더 */
+.header {
+  padding: 8px 20px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 10;
+  border-radius: 20px 20px 0 0;
+}
+
+.dragHandle {
+  width: 40px;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #666666;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: #f5f5f5;
+}
+
+/* 댓글 목록 */
+.commentList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.commentList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.commentList::-webkit-scrollbar-thumb {
+  background-color: #d0d0d0;
+  border-radius: 2px;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #999999;
+  font-size: 14px;
+}
+
+/* 댓글 아이템 */
+.commentItem {
+  display: flex;
+  gap: 12px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.commentContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.authorName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #999999;
+}
+
+.commentText {
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+.commentActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.likeButton,
+.replyButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #666666;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.likeButton:hover,
+.replyButton:hover {
+  color: #15c47e;
+}
+
+.likeButton svg,
+.replyButton svg {
+  flex-shrink: 0;
+}
+
+/* 입력 영역 */
+.inputContainer {
+  padding: 12px 20px 12px;
+  border-top: 1px solid #f0f0f0;
+  background-color: #ffffff;
+  position: sticky;
+  bottom: 0;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #f8f8f8;
+  border-radius: 24px;
+  transition: background-color 0.2s;
+}
+
+.inputWrapper:focus-within {
+  background-color: #f0f0f0;
+}
+
+.input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #1a1a1a;
+  resize: none;
+  max-height: 100px;
+  overflow-y: auto;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.input::placeholder {
+  color: #999999;
+}
+
+.input::-webkit-scrollbar {
+  width: 4px;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background-color: #d0d0d0;
+  border-radius: 2px;
+}
+
+.submitButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  border-radius: 50%;
+}
+
+.submitButton.active {
+  color: #15c47e;
+}
+
+.submitButton:hover.active {
+  background-color: rgba(21, 196, 126, 0.1);
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .bottomSheet {
+    border-radius: 16px 16px 0 0;
+  }
+
+  .header {
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+/* iOS Safe Area 대응 */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .inputContainer {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+}

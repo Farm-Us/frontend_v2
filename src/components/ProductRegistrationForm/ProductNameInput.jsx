@@ -45,6 +45,7 @@ export const ProductNameInput = ({
         render={({ field }) => (
           <input
             {...field}
+            value={field.value || ''}
             {...props}
             className={`${styles.textInput} ${fieldError ? styles.error : ''}`}
             placeholder={placeholder}

@@ -1,15 +1,29 @@
 /** src/components/ProductCard/ProductCard.jsx
  * 상품 카드 컴포넌트
- * @param {product, type} 상품 정보와 카드 타입 유형(small, ranked, none)
+ * @param {product, type, size} 상품 정보와 카드 타입 유형(small, ranked, none), 크기(default, large)
  * @returns
  */
 import React from 'react';
 import RankBadge from './RankBadge';
 import Rating from './Rating';
 import LikeButton from './LikeButton';
-export default function ProductCard({ product, type = 'small' }) {
-  const cardSize = type === 'ranked' ? 'w-40' : 'w-36';
-  const imageSize = type === 'ranked' ? 'h-40' : 'h-36';
+export default function ProductCard({ product, type = 'small', size = 'default' }) {
+  // size에 따른 크기 설정
+  const getSizeClasses = () => {
+    if (size === 'large') {
+      return {
+        cardSize: 'w-full',
+        imageSize: 'h-48'
+      };
+    }
+    // default size
+    return {
+      cardSize: type === 'ranked' ? 'w-40' : 'w-36',
+      imageSize: type === 'ranked' ? 'h-40' : 'h-36'
+    };
+  };
+
+  const { cardSize, imageSize } = getSizeClasses();
 
   return (
     <div className={`flex-shrink-0 ${cardSize} `}>

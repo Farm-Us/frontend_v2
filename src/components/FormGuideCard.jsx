@@ -79,6 +79,7 @@ export default function FormGuideCard({
             {/* 토글 버튼 */}
             <div className='flex justify-end'>
               <button
+                type='button'
                 className='flex items-center cursor-pointer hover:opacity-80 transition-opacity gap-1'
                 onClick={toggleExpanded}>
                 <span className='text-gray-500 text-xs sm:text-sm font-normal leading-tight'>

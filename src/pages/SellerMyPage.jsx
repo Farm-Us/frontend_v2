@@ -57,7 +57,7 @@ export default function SellerMyPage() {
       <div className='h-3 bg-gray-100'></div>
 
       {/* 활동 분석 */}
-      <ActivityAnalysis activityData={activityData} linkTo='/seller-mypage/stats' />
+      <ActivityAnalysis activityData={activityData} linkTo='#' />
 
       <div className='h-3 bg-gray-100'></div>
 

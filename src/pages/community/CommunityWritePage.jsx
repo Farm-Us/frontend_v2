@@ -64,7 +64,9 @@ export default function CommunityWritePage() {
         />
         <div className='py-4'>
           {/* 이미지 미리보기 추가 */}
-          <ImageCarousel images={images} removeImage={removeImage} mode='edit' />
+          <div className='h-[335px]'>
+            <ImageCarousel images={images} removeImage={removeImage} mode='edit' />
+          </div>
 
           {/* 태그된 상품 목록 */}
           <TaggedProductsList

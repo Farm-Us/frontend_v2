@@ -1,8 +1,8 @@
 // src/pages/community/CommunityWriteTagPage.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import useCommunityWriteStore from '../../store/communityWriteStore';
 import { itemApi } from '../../services/itemApi';
 import { useUserStore } from '../../store/userStore';
@@ -26,23 +26,51 @@ export default function CommunityWriteTagPage() {
   const navigate = useNavigate();
   const { taggedProducts, toggleProductTag } = useCommunityWriteStore();
   const producerId = useUserStore((state) => state.producerId);
+  const observerTarget = useRef(null);
 
-  // 판매자의 상품 목록 조회
-  const {
-    data: myProducts = [],
-    isLoading,
-    error,
-  } = useQuery({
+  // 판매자의 상품 목록 조회 (무한스크롤)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useInfiniteQuery({
     queryKey: ['my-products', producerId],
-    queryFn: () => itemApi.getItemsProducer(producerId),
-    select: (response) => {
-      // 여러 가능한 응답 구조에 대응
-      const products = response?.content || response?.data?.content || response?.data || [];
-      return Array.isArray(products) ? products : [];
+    queryFn: ({ pageParam = 0 }) =>
+      itemApi.getItemsProducer(producerId, {
+        page: pageParam,
+        size: 10,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.content && lastPage.content.length > 0 && !lastPage.last) {
+        return allPages.length;
+      }
+      return undefined;
     },
     enabled: !!producerId,
     staleTime: 5 * 60 * 1000,
   });
+
+  // 페이지별 데이터를 평탄화
+  const myProducts = data?.pages.flatMap((page) => page.content || []) || [];
+
+  // Intersection Observer 설정
+  const handleObserver = useCallback(
+    (entries) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  );
+
+  useEffect(() => {
+    const element = observerTarget.current;
+    const option = { threshold: 0 };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+    if (element) observer.observe(element);
+
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, [handleObserver]);
 
   // 상품 선택/해제 핸들러
   const handleToggleProduct = (product) => {
@@ -78,26 +106,35 @@ export default function CommunityWriteTagPage() {
 
         {/* 상품 목록 */}
         {!isLoading && !error && myProducts.length > 0 ? (
-          myProducts.map((product) => {
-            // API에서 itemId를 id로 정규화
-            const normalizedProduct = {
-              ...product,
-              id: product.itemId || product.id, // itemId를 id로 매핑
-            };
+          <>
+            {myProducts.map((product) => {
+              // API에서 itemId를 id로 정규화
+              const normalizedProduct = {
+                ...product,
+                id: product.itemId || product.id, // itemId를 id로 매핑
+              };
 
-            return (
-              <ProductCardRevers
-                key={normalizedProduct.id}
-                itemName={product.itemName || product.name}
-                itemPrice={product.itemPrice || product.price}
-                rating={product?.rating}
-                reviews={product?.reviews || 0}
-                image={product?.mainImage || product?.image || product?.thumbnailImageUrl}
-                isSelected={taggedProducts?.some((p) => p.id === normalizedProduct.id)}
-                onSelect={() => handleToggleProduct(normalizedProduct)}
-              />
-            );
-          })
+              return (
+                <ProductCardRevers
+                  key={normalizedProduct.id}
+                  itemName={product.itemName || product.name}
+                  discount={product.discountRate}
+                  itemPrice={product?.discountedPrice}
+                  rating={product?.rating}
+                  reviews={product?.reviews || 0}
+                  image={product?.thumbnailImageUrl}
+                  isSelected={taggedProducts?.some((p) => p.id === normalizedProduct.id)}
+                  onSelect={() => handleToggleProduct(normalizedProduct)}
+                />
+              );
+            })}
+            {isFetchingNextPage && (
+              <div className={styles.infoText} style={{ padding: '20px', textAlign: 'center' }}>
+                로딩 중...
+              </div>
+            )}
+            <div ref={observerTarget} style={{ height: '20px' }} />
+          </>
         ) : !isLoading && !error ? (
           <div className={`${styles.infoText} flex flex-col justify-center items-center h-full w-full`}>
             <span>등록한 상품이 없습니다.</span>

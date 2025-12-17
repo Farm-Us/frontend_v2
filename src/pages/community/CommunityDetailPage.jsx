@@ -9,6 +9,7 @@ import CommonHeader from '@/components/Header/CommonHeader';
 import ImageCarousel from '@/components/carousel/ImageCarousel';
 import LinkedProductList from '@/components/community/LinkedProductList';
 import PostInteractionBar from '@/components/social/PostInteractionBar';
+import CommentBottomSheet from '../../components/modal/CommentBottomSheet';
 
 export default function CommunityDetailPage() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export default function CommunityDetailPage() {
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLike = () => {
@@ -25,6 +27,7 @@ export default function CommunityDetailPage() {
 
   const handleComment = () => {
     // 댓글 창 열기
+    setIsCommentOpen(true);
   };
 
   const handleShare = () => {
@@ -88,7 +91,7 @@ export default function CommunityDetailPage() {
           )}
 
           {/* 내용 */}
-          <div className='px-5 w-full h-[264px] '>
+          <div className='px-5 w-full h-[264px] pt-2'>
             <p className='whitespace-pre-wrap text-gray-800 text-mb leading-relaxed'>{post?.content}</p>
           </div>
         </div>
@@ -103,6 +106,14 @@ export default function CommunityDetailPage() {
         onShare={handleShare}
         isLiked={isLiked}
       />
+
+      {/* 코멘트 보이게 */}
+      <CommentBottomSheet 
+        postId={post?.postId}
+        isOpen={isCommentOpen}
+        onClose={() => setIsCommentOpen(false)}
+      />
+
     </div>
   );
 }

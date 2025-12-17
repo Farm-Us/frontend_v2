@@ -7,10 +7,9 @@ import { useUserStore } from '../../store/userStore';
 import styles from './ProfileSection.module.css';
 
 export default function ProfileSection({ type = 'customer' }) {
-  const isSeller = type === 'seller';
   const { guestAuth, sellerAuth } = useUserInfo();
   const { user } = useUserCheck();
-  const { toggleSellerMode } = useUserStore();
+  const { isSeller, toggleSellerMode } = useUserStore();
 
   const handleToggleMode = () => {
     console.log('전환 버튼 클릭!', { currentMode: isSeller ? 'seller' : 'customer' });

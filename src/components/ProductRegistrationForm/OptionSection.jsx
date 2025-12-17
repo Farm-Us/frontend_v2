@@ -69,7 +69,7 @@ export const OptionSection = ({
             control={control}
             Controller={Controller}
             validationRules={{
-              [`options.${index}.name`]: { required: '예) 1kg / 3개입 / 1박스 / 대' },
+              [`options.${index}.value`]: { required: '예) 1kg / 3개입 / 1박스 / 대' },
             }}
             errors={errors}
             watch={watch}
@@ -77,7 +77,7 @@ export const OptionSection = ({
           />
           <ProductNameInput
             name={`options.${index}.price`}
-            label='옵션값' // 라벨이 필요없다면 빈 문자열
+            label='가격' // 라벨이 필요없다면 빈 문자열
             placeholder='15000'
             type='number'
             maxLength={20} // 적절한 길이 설정
@@ -85,7 +85,7 @@ export const OptionSection = ({
             control={control}
             Controller={Controller}
             validationRules={{
-              [`options.${index}.name`]: {
+              [`options.${index}.price`]: {
                 required: '옵션 가격 숫자만 입력해주세요.',
                 min: {
                   value: 0,
@@ -100,7 +100,13 @@ export const OptionSection = ({
         </div>
       ))}
 
-      <button type='button' onClick={handleAddOption} className={styles.addButton}>
+      <button 
+        type='button' 
+        onClick={(e) => {
+          e.preventDefault();
+          handleAddOption();
+        }} 
+        className={styles.addButton}>
         <PlusIcon /> 옵션 추가
       </button>
     </div>

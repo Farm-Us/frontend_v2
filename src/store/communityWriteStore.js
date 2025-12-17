@@ -33,12 +33,12 @@ const useCommunityWriteStore = create((set) => ({
     }
 
     // 이미지 용량 제한 (1MB)
-    for (let file of imageFiles) {
-      if (file.size > 1 * 1024 * 1024) {
-        alert('이미지 하나의 용량은 최대 1MB까지 허용됩니다.');
-        return;
-      }
-    }
+    // for (let file of imageFiles) {
+    //   if (file.size > 1 * 1024 * 1024) {
+    //     alert('이미지 하나의 용량은 최대 1MB까지 허용됩니다.');
+    //     return;
+    //   }
+    // }
 
     // Base64 변환을 먼저 완료
     const base64Images = await Promise.all(imageFiles.map((file) => toBase64(file)));

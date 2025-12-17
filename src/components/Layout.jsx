@@ -21,6 +21,8 @@ export default function Layout() {
   const showHeaderAndTabs = location.pathname === '/' || location.pathname === '/community';
   // 마이페이지 헤더
   const showMypageHeader = location.pathname === '/mypage' || location.pathname === '/seller-mypage';
+  // 자체 헤더가 있어서 margin-top이 필요 없는 페이지들
+  const hasOwnHeader = location.pathname === '/order-complete' || location.pathname === '/cart' || location.pathname.startsWith('/product-detail');
 
   return (
     <div className={styles.container}>
@@ -43,7 +45,7 @@ export default function Layout() {
       )}
       <main
         className={styles.mainContent}
-        style={{ marginTop: headerHeight }} // 동적으로 margin 설정
+        style={{ marginTop: hasOwnHeader ? 0 : headerHeight }} // 자체 헤더가 있는 페이지는 margin 제거
       >
         <Outlet />
       </main>
